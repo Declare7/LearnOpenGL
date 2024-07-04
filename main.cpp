@@ -72,10 +72,11 @@ void compileVertexShader()
 void compileFragmentShader()
 {
     const char *fragmentShaderSource = "#version 330 core\n"
+                                       "uniform vec4 ourColor;\n"
                                        "out vec4 FragColor;\n"
                                        "void main()\n"
                                        "{\n"
-                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                       "    FragColor = ourColor;\n"
                                        "}\0";
 
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -200,6 +201,12 @@ int main()
 
         //启用着色器程序；
         glUseProgram(shaderProgram);
+
+        float timeValue = (float)glfwGetTime();
+        float greenValue = (sin(timeValue)/ 2.0f) + 0.5f;
+        int ourColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        glUniform4f(ourColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
