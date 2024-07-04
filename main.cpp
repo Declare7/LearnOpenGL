@@ -5,16 +5,15 @@
 using namespace std;
 
 float vertices[] = {
-    0.5f, 0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    -0.5f, -0.5f, 0.0f,
-    -0.5f, 0.5f, 0.0f
+    0.0f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+    -0.5f, -0.5f, 0.0f,0.0f, 0.0f, 1.0f
 };
 
-unsigned int indices[] = {
-    0, 1, 3,
-    1, 2, 3
-};
+// unsigned int indices[] = {
+//     0, 1, 3,
+//     1, 2, 3
+// };
 
 unsigned int VBO;
 unsigned int vertexShader;
@@ -46,9 +45,12 @@ void compileVertexShader()
 {
     const char *vertexShaderSource = "#version 330 core\n"
                                      "layout (location = 0) in vec3 aPos;\n"
+                                     "layout (location = 1) in vec3 aColor;\n"
+                                     "out vec3 ourColor;\n"
                                      "void main()\n"
                                      "{\n"
                                      "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                     "   ourColor = aColor;\n"
                                      "}\0";
 
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -72,11 +74,11 @@ void compileVertexShader()
 void compileFragmentShader()
 {
     const char *fragmentShaderSource = "#version 330 core\n"
-                                       "uniform vec4 ourColor;\n"
+                                       "in vec3 ourColor;\n"
                                        "out vec4 FragColor;\n"
                                        "void main()\n"
                                        "{\n"
-                                       "    FragColor = ourColor;\n"
+                                       "    FragColor = vec4(ourColor, 1.0f);\n"
                                        "}\0";
 
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -119,11 +121,6 @@ void linkProgram()
         glGetProgramInfoLog(shaderProgram, sizeof(infoLog), NULL, infoLog);
         cout<< infoLog<< endl;
     }
-}
-
-void linkVerticesToVertexShader()
-{
-
 }
 
 
@@ -177,14 +174,17 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     //告诉OpenGL如何使用顶点数据；
 
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // unsigned int EBO;
+    // glGenBuffers(1, &EBO);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     //参数0对应顶点着色器的layout (location=0)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -202,15 +202,10 @@ int main()
         //启用着色器程序；
         glUseProgram(shaderProgram);
 
-        float timeValue = (float)glfwGetTime();
-        float greenValue = (sin(timeValue)/ 2.0f) + 0.5f;
-        int ourColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-        glUniform4f(ourColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
-        // glDrawArrays(GL_TRIANGLES, 0, 3);
 
         //交换缓冲区；
         glfwSwapBuffers(window);
