@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         3rd/glad/src/glad.c \
+        3rd/stb/stb_image.cpp \
         main.cpp
 
 LIBS += -lOpenGL32
@@ -19,3 +20,6 @@ DEPENDPATH += $$PWD/3rd/glfw/include
 
 INCLUDEPATH += $$PWD/3rd/glad/include
 DEPENDPATH += $$PWD/3rd/glad/include
+
+HEADERS += \
+    3rd/stb/stb_image.h
