@@ -1,7 +1,7 @@
 #include <iostream>
 #include "glad/glad.h"
-#include "glfw3.h"
-#include "3rd/stb/stb_image.h"
+#include "GLFW/glfw3.h"
+#include "stb_image.h"
 
 using namespace std;
 
