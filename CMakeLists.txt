@@ -15,11 +15,23 @@ find_package(glfw3 REQUIRED)
 set(SOURCE_FILES
     main.cpp
     3rd/glad/src/glad.c
-    3rd/stb/stb_image.cpp)
+    3rd/stb/stb_image.cpp
 
-add_executable(OpenGLDemo ${SOURCE_FILES})
+    TriangleSection.h
+    TriangleSection.cpp
+    RectangleSection.h
+    RectangleSection.cpp
+    Uitility.h
+    Uitility.cpp
+    shader/TriangleSection/normal.vert
+    shader/TriangleSection/normal.frag)
+
+add_executable(OpenGLDemo ${SOURCE_FILES}
+    SectionBase.h SectionBase.cpp)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 
 target_include_directories(OpenGLDemo PRIVATE 3rd/glad/include)
 target_include_directories(OpenGLDemo PRIVATE 3rd/stb)
+
+target_compile_definitions(OpenGLDemo PRIVATE SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
