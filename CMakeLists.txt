@@ -24,10 +24,19 @@ set(SOURCE_FILES
     Uitility.h
     Uitility.cpp
     shader/TriangleSection/normal.vert
-    shader/TriangleSection/normal.frag)
+    shader/TriangleSection/normal.frag
+    shader/TriangleSection/shader.vert
+    shader/TriangleSection/shader.frag
+    shader/RectangleSection/normal.vert
+    shader/RectangleSection/normal.frag)
 
 add_executable(OpenGLDemo ${SOURCE_FILES}
-    SectionBase.h SectionBase.cpp)
+    SectionBase.h SectionBase.cpp
+    ShaderSection.h ShaderSection.cpp
+    shader/TriangleSection/uniform.frag
+    shader/TriangleSection/uniform.vert
+    shader/TriangleSection/colors.frag
+    shader/TriangleSection/colors.vert)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

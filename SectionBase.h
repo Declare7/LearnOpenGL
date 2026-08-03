@@ -6,11 +6,11 @@
 class SectionBase
 {
 public:
-    SectionBase();
+    SectionBase(const std::string &type);
     virtual ~SectionBase();
 
 public:
-    virtual void prepare(const std::string &type="normal")=0;
+    virtual void prepare()=0;
     virtual void render()=0;
 
 protected:

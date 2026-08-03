@@ -6,10 +6,14 @@
 class TriangleSection : public SectionBase
 {
 public:
-    TriangleSection();
+    TriangleSection(const std::string &type="normal");
 
-    void prepare(const std::string &type="normal") override;
-    void render() override;
+    virtual void prepare() override;
+    virtual void render() override;
+
+private:
+    void renderUniform();
+    void prepareColors();
 };
 
 #endif // TRIANGLESECTION_H

@@ -1,13 +1,14 @@
 #include "RectangleSection.h"
 #include "glad/glad.h"
 
-RectangleSection::RectangleSection() {}
-
-void RectangleSection::prepare(const std::string &type)
+RectangleSection::RectangleSection(const std::string &type) : SectionBase(type)
 {
-    m_type = type;
 
-    if(type == "EBO")
+}
+
+void RectangleSection::prepare()
+{
+    if(m_type == "EBO")
     {
         prepareEBO();
         return;

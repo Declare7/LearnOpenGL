@@ -6,9 +6,9 @@
 class RectangleSection : public SectionBase
 {
 public:
-    RectangleSection();
+    RectangleSection(const std::string &type="normal");
 
-    void prepare(const std::string &type="normal") override;
+    void prepare() override;
     void render() override;
 
 private:

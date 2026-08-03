@@ -1,12 +1,22 @@
 #include "TriangleSection.h"
 #include "glad/glad.h"
+#include <GLFW/glfw3.h>
 
 
-TriangleSection::TriangleSection() {}
-
-void TriangleSection::prepare(const std::string &type)
+TriangleSection::TriangleSection(const std::string &type) : SectionBase(type)
 {
-    loadShader(type);
+
+}
+
+void TriangleSection::prepare()
+{
+    if(m_type == "colors")
+    {
+        prepareColors();
+        return;
+    }
+
+    loadShader(m_type);
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
@@ -37,8 +47,54 @@ void TriangleSection::prepare(const std::string &type)
 
 void TriangleSection::render()
 {
-    // draw our first triangle
+    if(m_type == "uniform")
+    {
+        renderUniform();
+    }
+    else
+    {
+        // draw our first triangle
+        glUseProgram(m_shaderProgram);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // glBindVertexArray(0); // no need to unbind it every time
+    }
+}
+
+void TriangleSection::renderUniform()
+{
     glUseProgram(m_shaderProgram);
+
+    float timeVal = glfwGetTime();
+    float greenVal = sin(timeVal)/ 2.0f + 0.5f;
+    int uniformColorLocation = glGetUniformLocation(m_shaderProgram, "uniColor");
+    glUniform4f(uniformColorLocation, 0.0f, greenVal, 0.0f, 1.0f);
+
+    // glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    // glBindVertexArray(0); // no need to unbind it every time
+}
+
+void TriangleSection::prepareColors()
+{
+    loadShader(m_type);
+
+    float vertices[] = {
+    -0.5f, -0.5, 0.0f,  1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+    0.0f, 0.5f, 0.0f,   0.0f, 0.0f, 1.0f
+    };
+
+    glGenVertexArrays(1, &m_VAO);
+    glGenBuffers(1, &m_VBO);
+    glBindVertexArray(m_VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

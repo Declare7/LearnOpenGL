@@ -11,7 +11,11 @@
 #include "glad/glad.h"
 #include <iostream>
 
-SectionBase::SectionBase() {}
+SectionBase::SectionBase(const std::string &type)
+    : m_type(type)
+{
+
+}
 
 SectionBase::~SectionBase()
 {

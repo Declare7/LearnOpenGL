@@ -4,6 +4,8 @@
 #include "TriangleSection.h"
 #include "RectangleSection.h"
 
+void showMenu();
+SectionBase* createSection(int choice);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void render(SectionBase *section);
@@ -12,8 +14,15 @@ void render(SectionBase *section);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+using namespace std;
+
 int main()
 {
+    int choice = 0;
+    showMenu();
+    cin>> choice;
+    cin.ignore();
+
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -45,18 +54,11 @@ int main()
         return -1;
     }
 
-    SectionBase *section = nullptr;
-    // 三角形
-    // {
-    //     section = new TriangleSection();
-    //     section->prepare();
-    // }
-
-    // 矩形
+    SectionBase *section = createSection(choice);
+    if(section == nullptr)
     {
-        section = new RectangleSection();
-        // section->prepare();
-        section->prepare("EBO");
+        cout<< "Invalid Input."<< endl;
+        return -1;
     }
 
     // render loop
@@ -85,6 +87,63 @@ int main()
     glfwTerminate();
     delete section;
     return 0;
+}
+
+
+void showMenu()
+{
+    cout<< "----------------------------"<< endl;
+    cout<< "1. Triangle"<< endl;
+    cout<< "2. Reangle VBO"<< endl;
+    cout<< "3. Reangle EBO"<< endl;
+    cout<< "4. Triangle Shader"<< endl;
+    cout<< "5. Triangle Uniform"<< endl;
+    cout<< "6. Triangle Colors"<< endl;
+
+    cout<< "----------------------------"<< endl;
+    cout<< "Select To Show:"<< endl;
+}
+
+SectionBase* createSection(int choice)
+{
+    SectionBase *section = nullptr;
+    switch(choice)
+    {
+    case 1:
+        section = new TriangleSection();
+        break;
+
+    case 2:
+        section = new RectangleSection();
+        break;
+
+    case 3:
+        section = new RectangleSection("EBO");
+        break;
+
+    case 4:
+        section = new TriangleSection("shader");
+        break;
+
+    case 5:
+        section = new TriangleSection("uniform");
+        break;
+
+    case 6:
+        section = new TriangleSection("colors");
+        break;
+
+    default:
+
+        break;
+    }
+
+    if(section)
+    {
+        section->prepare();
+    }
+
+    return section;
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
