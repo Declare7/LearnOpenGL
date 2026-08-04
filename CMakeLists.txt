@@ -17,26 +17,29 @@ set(SOURCE_FILES
     3rd/glad/src/glad.c
     3rd/stb/stb_image.cpp
 
+    SectionBase.h SectionBase.cpp
     TriangleSection.h
     TriangleSection.cpp
     RectangleSection.h
     RectangleSection.cpp
-    Uitility.h
-    Uitility.cpp
+
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
     shader/TriangleSection/shader.vert
     shader/TriangleSection/shader.frag
-    shader/RectangleSection/normal.vert
-    shader/RectangleSection/normal.frag)
-
-add_executable(OpenGLDemo ${SOURCE_FILES}
-    SectionBase.h SectionBase.cpp
-    ShaderSection.h ShaderSection.cpp
     shader/TriangleSection/uniform.frag
     shader/TriangleSection/uniform.vert
     shader/TriangleSection/colors.frag
-    shader/TriangleSection/colors.vert)
+    shader/TriangleSection/colors.vert
+
+    shader/RectangleSection/normal.vert
+    shader/RectangleSection/normal.frag
+    shader/RectangleSection/EBO.vert
+    shader/RectangleSection/EBO.frag)
+
+add_executable(OpenGLDemo ${SOURCE_FILES}
+    shader/RectangleSection/texture.frag
+    shader/RectangleSection/texture.vert)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

@@ -13,6 +13,7 @@ public:
 
 private:
     void prepareEBO();
+    void prepareTexture();
 };
 
 #endif // RECTANGLESECTION_H

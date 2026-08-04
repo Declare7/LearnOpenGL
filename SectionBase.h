@@ -26,7 +26,7 @@ protected:
     std::string m_type{""};
     unsigned int m_shaderProgram{0};
     unsigned int m_VAO{0};
-    unsigned int m_VBO{0};
+    unsigned int m_texture{0};
 };
 
 #endif // SECTIONBASE_H
