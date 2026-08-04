@@ -8,5 +8,6 @@ uniform sampler2D uniTexture;
 void main()
 {
     // FragColor = vertColor;
+    // FragColor = texture(uniTexture, texCoord);
     FragColor = texture(uniTexture, texCoord) * vertColor;
 }

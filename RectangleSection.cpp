@@ -18,6 +18,10 @@ void RectangleSection::prepare()
     {
         prepareTexture();
     }
+    else if(m_type == "textureUnit")
+    {
+        prepareTextureUnit();
+    }
     else
     {
         float vertices[] = {
@@ -54,6 +58,10 @@ void RectangleSection::render()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
     else if(m_type == "texture")
+    {
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
+    else if(m_type == "textureUnit")
     {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
@@ -103,8 +111,9 @@ void RectangleSection::prepareEBO()
 
 void RectangleSection::prepareTexture()
 {
-    glGenTextures(1, &m_texture);
-    glBindTexture(GL_TEXTURE_2D, m_texture);
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
 
     //设置纹理环绕方式
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -118,7 +127,7 @@ void RectangleSection::prepareTexture()
     int height;
     int channels;
     std::string imgPath = SOURCE_PATH;
-    imgPath += "/container.jpg";
+    imgPath += "/resource/image/container.jpg";
     unsigned char* data = stbi_load(imgPath.c_str(), &width, &height, &channels, 0);
     if(data)
     {
@@ -163,5 +172,98 @@ void RectangleSection::prepareTexture()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void RectangleSection::prepareTextureUnit()
+{
+    //VAO
+    glGenVertexArrays(1, &m_VAO);
+    glBindVertexArray(m_VAO);
+
+    //VBO
+    float vertices[] = {
+        0.5, 0.5, 0.0,      1.0, 1.0,
+        0.5, -0.5, 0.0,     1.0, 0.0,
+        -0.5, -0.5, 0.0,    0.0, 0.0,
+        -0.5, 0.5, 0.0,     0.0, 1.0
+    };
+
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    //EBO
+    int indices[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    //vertex attribution
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    //texture 0
+    unsigned int texture0;
+    glGenTextures(1, &texture0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture0);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    int width = 0;
+    int height = 0;
+    int channels = 0;
+    std::string imgPath = SOURCE_PATH;
+    imgPath += "/resource/image/container.jpg";
+    unsigned char *data = stbi_load(imgPath.c_str(), &width, &height, &channels, 0);
+    if(data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    stbi_image_free(data);
+
+    //texture 1
+    unsigned int texture1;
+    glGenTextures(1, &texture1);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    imgPath = SOURCE_PATH;
+    imgPath += "/resource/image/awesomeface.png";
+    stbi_set_flip_vertically_on_load(true);
+    data = stbi_load(imgPath.c_str(), &width, &height, &channels, 0);
+    if(data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    stbi_image_free(data);
+
+    glUseProgram(m_shaderProgram);
+    unsigned int texture1Location = glGetUniformLocation(m_shaderProgram, "texture0");
+    glUniform1i(texture1Location, 0);
+    unsigned int texture2Location = glGetUniformLocation(m_shaderProgram, "texture1");
+    glUniform1i(texture2Location, 1);
+
+    //unbind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

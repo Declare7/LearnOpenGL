@@ -39,7 +39,9 @@ set(SOURCE_FILES
 
 add_executable(OpenGLDemo ${SOURCE_FILES}
     shader/RectangleSection/texture.frag
-    shader/RectangleSection/texture.vert)
+    shader/RectangleSection/texture.vert
+    shader/RectangleSection/textureUnit.frag
+    shader/RectangleSection/textureUnit.vert)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

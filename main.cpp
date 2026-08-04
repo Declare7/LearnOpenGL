@@ -100,6 +100,7 @@ void showMenu()
     cout<< "5. Triangle Uniform"<< endl;
     cout<< "6. Triangle Colors"<< endl;
     cout<< "7. Rectangle Texture"<< endl;
+    cout<< "8. Texture Unit"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -113,29 +114,26 @@ SectionBase* createSection(int choice)
     case 1:
         section = new TriangleSection();
         break;
-
     case 2:
         section = new RectangleSection();
         break;
-
     case 3:
         section = new RectangleSection("EBO");
         break;
-
     case 4:
         section = new TriangleSection("shader");
         break;
-
     case 5:
         section = new TriangleSection("uniform");
         break;
-
     case 6:
         section = new TriangleSection("colors");
         break;
-
     case 7:
         section = new RectangleSection("texture");
+        break;
+    case 8:
+        section = new RectangleSection("textureUnit");
         break;
 
     default:
