@@ -22,6 +22,8 @@ set(SOURCE_FILES
     TriangleSection.cpp
     RectangleSection.h
     RectangleSection.cpp
+    TransformSection.h
+    TransformSection.cpp
 
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
@@ -35,13 +37,15 @@ set(SOURCE_FILES
     shader/RectangleSection/normal.vert
     shader/RectangleSection/normal.frag
     shader/RectangleSection/EBO.vert
-    shader/RectangleSection/EBO.frag)
-
-add_executable(OpenGLDemo ${SOURCE_FILES}
+    shader/RectangleSection/EBO.frag
     shader/RectangleSection/texture.frag
     shader/RectangleSection/texture.vert
     shader/RectangleSection/textureUnit.frag
-    shader/RectangleSection/textureUnit.vert)
+    shader/RectangleSection/textureUnit.vert
+    shader/TransformSection/normal.frag
+    shader/TransformSection/normal.vert)
+
+add_executable(OpenGLDemo ${SOURCE_FILES})
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

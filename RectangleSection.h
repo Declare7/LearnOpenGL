@@ -11,7 +11,7 @@ public:
     void prepare() override;
     void render() override;
 
-private:
+protected:
     void prepareEBO();
     void prepareTexture();
     void prepareTextureUnit();

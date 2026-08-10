@@ -3,6 +3,7 @@
 #include <iostream>
 #include "TriangleSection.h"
 #include "RectangleSection.h"
+#include "TransformSection.h"
 
 void showMenu();
 SectionBase* createSection(int choice);
@@ -101,6 +102,7 @@ void showMenu()
     cout<< "6. Triangle Colors"<< endl;
     cout<< "7. Rectangle Texture"<< endl;
     cout<< "8. Texture Unit"<< endl;
+    cout<< "9. Transform"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -134,6 +136,9 @@ SectionBase* createSection(int choice)
         break;
     case 8:
         section = new RectangleSection("textureUnit");
+        break;
+    case 9:
+        section = new TransformSection();
         break;
 
     default:
