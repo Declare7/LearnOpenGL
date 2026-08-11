@@ -4,6 +4,7 @@
 #include "TriangleSection.h"
 #include "RectangleSection.h"
 #include "TransformSection.h"
+#include "CoordinateSection.h"
 
 void showMenu();
 SectionBase* createSection(int choice);
@@ -103,6 +104,8 @@ void showMenu()
     cout<< "7. Rectangle Texture"<< endl;
     cout<< "8. Texture Unit"<< endl;
     cout<< "9. Transform"<< endl;
+    cout<< "10. Coordinate"<< endl;
+    cout<< "11. Coordinate 3D"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -139,6 +142,12 @@ SectionBase* createSection(int choice)
         break;
     case 9:
         section = new TransformSection();
+        break;
+    case 10:
+        section = new CoordinateSection();
+        break;
+    case 11:
+        section = new CoordinateSection("3D");
         break;
 
     default:

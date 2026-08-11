@@ -24,6 +24,8 @@ set(SOURCE_FILES
     RectangleSection.cpp
     TransformSection.h
     TransformSection.cpp
+    CoordinateSection.h
+    CoordinateSection.cpp
 
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
@@ -43,7 +45,11 @@ set(SOURCE_FILES
     shader/RectangleSection/textureUnit.frag
     shader/RectangleSection/textureUnit.vert
     shader/TransformSection/normal.frag
-    shader/TransformSection/normal.vert)
+    shader/TransformSection/normal.vert
+    shader/CoordinateSection/normal.frag
+    shader/CoordinateSection/normal.vert
+    shader/CoordinateSection/3D.frag
+    shader/CoordinateSection/3D.vert)
 
 add_executable(OpenGLDemo ${SOURCE_FILES})
 
