@@ -17,7 +17,8 @@ set(SOURCE_FILES
     3rd/glad/src/glad.c
     3rd/stb/stb_image.cpp
 
-    SectionBase.h SectionBase.cpp
+    SectionBase.h
+    SectionBase.cpp
     TriangleSection.h
     TriangleSection.cpp
     RectangleSection.h
@@ -26,6 +27,8 @@ set(SOURCE_FILES
     TransformSection.cpp
     CoordinateSection.h
     CoordinateSection.cpp
+    CameraSection.h
+    CameraSection.cpp
 
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
@@ -49,7 +52,9 @@ set(SOURCE_FILES
     shader/CoordinateSection/normal.frag
     shader/CoordinateSection/normal.vert
     shader/CoordinateSection/3D.frag
-    shader/CoordinateSection/3D.vert)
+    shader/CoordinateSection/3D.vert
+    shader/CameraSection/normal.frag
+    shader/CameraSection/normal.vert)
 
 add_executable(OpenGLDemo ${SOURCE_FILES})
 

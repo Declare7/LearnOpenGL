@@ -5,10 +5,13 @@
 #include "RectangleSection.h"
 #include "TransformSection.h"
 #include "CoordinateSection.h"
+#include "CameraSection.h"
 
 void showMenu();
 SectionBase* createSection(int choice);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xPos, double yPos);
+void wheel_callback(GLFWwindow* window, double xOffset, double yOffset);
 void processInput(GLFWwindow *window);
 void render(SectionBase *section);
 
@@ -17,6 +20,8 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 using namespace std;
+
+SectionBase *section = nullptr;
 
 int main()
 {
@@ -47,6 +52,9 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, wheel_callback);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -56,7 +64,7 @@ int main()
         return -1;
     }
 
-    SectionBase *section = createSection(choice);
+    section = createSection(choice);
     if(section == nullptr)
     {
         cout<< "Invalid Input."<< endl;
@@ -106,6 +114,9 @@ void showMenu()
     cout<< "9. Transform"<< endl;
     cout<< "10. Coordinate"<< endl;
     cout<< "11. Coordinate 3D"<< endl;
+    cout<< "12. Camera"<< endl;
+    cout<< "13. Camera Keyboard"<< endl;
+    cout<< "14. Camera Mouse"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -149,6 +160,15 @@ SectionBase* createSection(int choice)
     case 11:
         section = new CoordinateSection("3D");
         break;
+    case 12:
+        section = new CameraSection();
+        break;
+    case 13:
+        section = new CameraSection("keyboard");
+        break;
+    case 14:
+        section = new CameraSection("mouse");
+        break;
 
     default:
 
@@ -167,8 +187,15 @@ SectionBase* createSection(int choice)
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
+    if(section == nullptr)
+    {
+        return;
+    }
+
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    section->processInput(window);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -178,6 +205,26 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xPos, double yPos)
+{
+    if(section == nullptr)
+    {
+        return;
+    }
+
+    section->processMouse(xPos, yPos);
+}
+
+void wheel_callback(GLFWwindow* window, double xOffset, double yOffset)
+{
+    if(section == nullptr)
+    {
+        return;
+    }
+
+    section->processWheel(xOffset, yOffset);
 }
 
 void render(SectionBase *section)

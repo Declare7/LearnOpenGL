@@ -3,6 +3,8 @@
 
 #include <string>
 
+class GLFWwindow;
+
 class SectionBase
 {
 public:
@@ -12,6 +14,9 @@ public:
 public:
     virtual void prepare()=0;
     virtual void render()=0;
+    virtual void processInput(GLFWwindow *window){};
+    virtual void processMouse(double msX, double msY){};
+    virtual void processWheel(double xOffset, double yOffset){};
 
 protected:
     void loadShader(const std::string &type="normal");

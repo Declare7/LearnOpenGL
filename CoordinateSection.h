@@ -13,6 +13,7 @@ public:
 
 protected:
     void prepare3D();
+    void render3D();
 };
 
 #endif // COORDINATESECTION_H
