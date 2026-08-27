@@ -27,7 +27,7 @@ void CameraSection::prepare()
 
 void CameraSection::render()
 {
-    glUseProgram(m_shaderProgram);
+    m_program->useProgram();
 
     if(m_type == "normal")
     {
@@ -37,14 +37,12 @@ void CameraSection::render()
     {
         glm::mat4 view = glm::mat4(1.0);
         view = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
-        unsigned int viewLocation = glGetUniformLocation(m_shaderProgram, "view");
-        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+        m_program->setUniform("view", view);
     }
 
     glm::mat4 projection = glm::mat4(1.0);
     projection = glm::perspective(glm::radians(m_fov), 800.0f/600, 0.1f, 100.0f);
-    unsigned int projectionLocation = glGetUniformLocation(m_shaderProgram, "projection");
-    glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+    m_program->setUniform("projection", projection);
 
     glm::vec3 cubePosition[] = {
         glm::vec3(0.0, 0.0, 0.0),
@@ -64,8 +62,7 @@ void CameraSection::render()
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, cubePosition[i]);
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(20.0f * (i+1)), glm::vec3(1.0f, 0.5f, 0.3f));
-        unsigned int modelLocation = glGetUniformLocation(m_shaderProgram, "model");
-        glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+        m_program->setUniform("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
@@ -166,6 +163,5 @@ void CameraSection::renderAround()
     float cameraX = sin(glfwGetTime()) * radius;
     float cameraZ = cos(glfwGetTime()) * radius;
     view = glm::lookAt(glm::vec3(cameraX, 0.0f, cameraZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    unsigned int viewLocation = glGetUniformLocation(m_shaderProgram, "view");
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+    m_program->setUniform("view", view);
 }

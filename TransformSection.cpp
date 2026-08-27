@@ -18,14 +18,13 @@ void TransformSection::prepare()
 
 void TransformSection::render()
 {
-    glUseProgram(m_shaderProgram);
+    m_program->useProgram();
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0));
     trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
     // trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
 
-    unsigned int transLocation = glGetUniformLocation(m_shaderProgram, "trans");
-    glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+    m_program->setUniform("trans", trans);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

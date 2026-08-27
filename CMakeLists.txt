@@ -93,7 +93,8 @@ set(SOURCE_FILES
     shader/CameraSection/normal.frag
     shader/CameraSection/normal.vert)
 
-add_executable(OpenGLDemo ${SOURCE_FILES})
+add_executable(OpenGLDemo ${SOURCE_FILES}
+    ShaderProgram.h ShaderProgram.cpp)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

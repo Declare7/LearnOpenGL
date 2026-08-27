@@ -56,7 +56,7 @@ void TriangleSection::render()
     else
     {
         // draw our first triangle
-        glUseProgram(m_shaderProgram);
+        m_program->useProgram();
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time
     }
@@ -64,12 +64,11 @@ void TriangleSection::render()
 
 void TriangleSection::renderUniform()
 {
-    glUseProgram(m_shaderProgram);
+    m_program->useProgram();
 
     float timeVal = glfwGetTime();
     float greenVal = sin(timeVal)/ 2.0f + 0.5f;
-    int uniformColorLocation = glGetUniformLocation(m_shaderProgram, "uniColor");
-    glUniform4f(uniformColorLocation, 0.0f, greenVal, 0.0f, 1.0f);
+    m_program->setUniform("uniColor", 0.0f, greenVal, 0.0f, 1.0f);
 
     // glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);

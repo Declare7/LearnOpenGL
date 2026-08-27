@@ -52,7 +52,7 @@ void RectangleSection::prepare()
 
 void RectangleSection::render()
 {
-    glUseProgram(m_shaderProgram);
+    m_program->useProgram();
     if(m_type == "EBO")
     {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -258,11 +258,9 @@ void RectangleSection::prepareTextureUnit()
     }
     stbi_image_free(data);
 
-    glUseProgram(m_shaderProgram);
-    unsigned int texture1Location = glGetUniformLocation(m_shaderProgram, "texture0");
-    glUniform1i(texture1Location, 0);
-    unsigned int texture2Location = glGetUniformLocation(m_shaderProgram, "texture1");
-    glUniform1i(texture2Location, 1);
+    m_program->useProgram();
+    m_program->setUniform("texture0", 0);
+    m_program->setUniform("texture1", 1);
 
     //unbind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);

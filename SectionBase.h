@@ -2,6 +2,7 @@
 #define SECTIONBASE_H
 
 #include <string>
+#include "ShaderProgram.h"
 
 class GLFWwindow;
 
@@ -22,15 +23,12 @@ protected:
     void loadShader(const std::string &type="normal");
 
 private:
-    std::string readVertexShader(const std::string &name);
-    std::string readFragmentShader(const std::string &name);
-    std::string readShader(const std::string &name, const std::string &suffix);
-    std::string getClasName();
+    std::string getClassName();
 
 protected:
     std::string m_type{""};
-    unsigned int m_shaderProgram{0};
     unsigned int m_VAO{0};
+    ShaderProgram *m_program{nullptr};
 };
 
 #endif // SECTIONBASE_H

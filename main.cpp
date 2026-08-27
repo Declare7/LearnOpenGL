@@ -52,9 +52,12 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, wheel_callback);
+    if(choice == 12 || choice == 13 || choice == 14)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetCursorPosCallback(window, mouse_callback);
+        glfwSetScrollCallback(window, wheel_callback);
+    }
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -110,8 +113,8 @@ void showMenu()
     cout<< "5. Triangle Uniform"<< endl;
     cout<< "6. Triangle Colors"<< endl;
     cout<< "7. Rectangle Texture"<< endl;
-    cout<< "8. Texture Unit"<< endl;
-    cout<< "9. Transform"<< endl;
+    cout<< "8. Rectangle Texture Unit"<< endl;
+    cout<< "9. Rectangle Transform"<< endl;
     cout<< "10. Coordinate"<< endl;
     cout<< "11. Coordinate 3D"<< endl;
     cout<< "12. Camera"<< endl;
