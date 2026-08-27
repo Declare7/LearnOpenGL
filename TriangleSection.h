@@ -13,11 +13,10 @@ public:
     virtual void render() override;
 
 private:
-    void prepareDoubleProgram();
-
-private:
     void renderUniform();
     void prepareColors();
+    void prepareDoubleProgram();
+    void prepareUniformCustom();
 
 private:
     unsigned int m_VAO2{0};

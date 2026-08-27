@@ -57,6 +57,11 @@ void TriangleSection::prepare()
         // glBindVertexArray(0);
         // glBindVertexArray(m_VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
     }
+
+    if(m_type == "uniformCustom")
+    {
+        prepareUniformCustom();
+    }
 }
 
 void TriangleSection::render()
@@ -84,6 +89,43 @@ void TriangleSection::render()
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time
     }
+}
+
+void TriangleSection::renderUniform()
+{
+    m_program->use();
+
+    float timeVal = glfwGetTime();
+    float greenVal = sin(timeVal)/ 2.0f + 0.5f;
+    m_program->setUniform("uniColor", 0.0f, greenVal, 0.0f, 1.0f);
+
+    // glBindVertexArray(m_VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void TriangleSection::prepareColors()
+{
+    float vertices[] = {
+    -0.5f, -0.5, 0.0f,  1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+    0.0f, 0.5f, 0.0f,   0.0f, 0.0f, 1.0f
+    };
+
+    glGenVertexArrays(1, &m_VAO);
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(m_VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void TriangleSection::prepareDoubleProgram()
@@ -130,39 +172,8 @@ void TriangleSection::prepareDoubleProgram()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void TriangleSection::renderUniform()
+void TriangleSection::prepareUniformCustom()
 {
     m_program->use();
-
-    float timeVal = glfwGetTime();
-    float greenVal = sin(timeVal)/ 2.0f + 0.5f;
-    m_program->setUniform("uniColor", 0.0f, greenVal, 0.0f, 1.0f);
-
-    // glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
-void TriangleSection::prepareColors()
-{
-    float vertices[] = {
-    -0.5f, -0.5, 0.0f,  1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-    0.0f, 0.5f, 0.0f,   0.0f, 0.0f, 1.0f
-    };
-
-    glGenVertexArrays(1, &m_VAO);
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(m_VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    m_program->setUniform("moveRight", 0.5, 0.0, 0.0);
 }

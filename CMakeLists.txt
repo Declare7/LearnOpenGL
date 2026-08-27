@@ -79,6 +79,10 @@ set(SOURCE_FILES
     shader/TriangleSection/colors.vert
     shader/TriangleSection/doubleProgram.frag
     shader/TriangleSection/doubleProgram.vert
+    shader/TriangleSection/uniformCustom.frag
+    shader/TriangleSection/uniformCustom.vert
+    shader/TriangleSection/vertexBeFrag.frag
+    shader/TriangleSection/vertexBeFrag.vert
 
     shader/RectangleSection/normal.vert
     shader/RectangleSection/normal.frag

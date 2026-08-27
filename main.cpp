@@ -121,6 +121,8 @@ void showMenu()
     cout<< "13. Camera Keyboard"<< endl;
     cout<< "14. Camera Mouse"<< endl;
     cout<< "15. Triangle Double Program"<< endl;
+    cout<< "16. Triangle Uniform Custom"<< endl;
+    cout<< "17. Triangle Vertex Be Frag"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -175,6 +177,12 @@ SectionBase* createSection(int choice)
         break;
     case 15:
         section = new TriangleSection("doubleProgram");
+        break;
+    case 16:
+        section = new TriangleSection("uniformCustom");
+        break;
+    case 17:
+        section = new TriangleSection("vertexBeFrag");
         break;
 
     default:
