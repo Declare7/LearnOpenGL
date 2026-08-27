@@ -66,6 +66,8 @@ set(SOURCE_FILES
     CoordinateSection.cpp
     CameraSection.h
     CameraSection.cpp
+    ShaderProgram.h
+    ShaderProgram.cpp
 
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
@@ -75,6 +77,8 @@ set(SOURCE_FILES
     shader/TriangleSection/uniform.vert
     shader/TriangleSection/colors.frag
     shader/TriangleSection/colors.vert
+    shader/TriangleSection/doubleProgram.frag
+    shader/TriangleSection/doubleProgram.vert
 
     shader/RectangleSection/normal.vert
     shader/RectangleSection/normal.frag
@@ -93,8 +97,7 @@ set(SOURCE_FILES
     shader/CameraSection/normal.frag
     shader/CameraSection/normal.vert)
 
-add_executable(OpenGLDemo ${SOURCE_FILES}
-    ShaderProgram.h ShaderProgram.cpp)
+add_executable(OpenGLDemo ${SOURCE_FILES})
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

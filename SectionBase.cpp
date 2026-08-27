@@ -16,16 +16,19 @@ SectionBase::SectionBase(const std::string &type)
 
 SectionBase::~SectionBase()
 {
-    delete m_program;
+    if(m_program != nullptr)
+    {
+        delete m_program;
+    }
 }
 
-void SectionBase::loadShader(const std::string &type)
+ShaderProgram *SectionBase::loadShader(const std::string &type)
 {
     std::string path = "shader";
     path = SOURCE_PATH;
     path = path + "/shader/" + getClassName() + "/";
 
-    m_program = new ShaderProgram(path, type);
+    return new ShaderProgram(path, type);
 }
 
 std::string SectionBase::getClassName()

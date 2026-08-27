@@ -8,12 +8,24 @@ TriangleSection::TriangleSection(const std::string &type) : SectionBase(type)
 
 }
 
+TriangleSection::~TriangleSection()
+{
+    if(m_program2 != nullptr)
+    {
+        delete m_program2;
+    }
+}
+
 void TriangleSection::prepare()
 {
-    loadShader(m_type);
+    m_program = loadShader(m_type);
     if(m_type == "colors")
     {
         prepareColors();
+    }
+    else if(m_type == "doubleProgram")
+    {
+        prepareDoubleProgram();
     }
     else
     {
@@ -53,6 +65,18 @@ void TriangleSection::render()
     {
         renderUniform();
     }
+    else if(m_type == "doubleProgram")
+    {
+        // draw our first triangle
+        glBindVertexArray(m_VAO);
+        m_program->use();
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // glBindVertexArray(0); // no need to unbind it every time
+
+        glBindVertexArray(m_VAO2);
+        m_program2->use();
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+    }
     else
     {
         // draw our first triangle
@@ -60,6 +84,50 @@ void TriangleSection::render()
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time
     }
+}
+
+void TriangleSection::prepareDoubleProgram()
+{
+    //first triangle
+    float vertices[] = {
+        -0.7, -0.3, 0.0,
+        -0.1, -0.9, 0.0,
+        0.0, 0.0, 0.0
+    };
+
+    glGenVertexArrays(1, &m_VAO);
+    glBindVertexArray(m_VAO);
+
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    //second triangle
+    m_program2 = loadShader("normal");
+    float vertices2[] = {
+        0.7, 0.3, 0.0,
+        0.1, 0.9, 0.0,
+        0.0, 0.0, 0.0
+    };
+
+    glGenVertexArrays(1, &m_VAO2);
+    glBindVertexArray(m_VAO2);
+
+    unsigned int VBO2;
+    glGenBuffers(1, &VBO2);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void TriangleSection::renderUniform()

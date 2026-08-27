@@ -14,7 +14,7 @@ CameraSection::CameraSection(const std::string &type)
 
 void CameraSection::prepare()
 {
-    loadShader();
+    m_program = loadShader();
     prepare3D();
 
     if(m_type == "keyboard" || m_type == "mouse")

@@ -20,7 +20,7 @@ public:
     virtual void processWheel(double xOffset, double yOffset){};
 
 protected:
-    void loadShader(const std::string &type="normal");
+    ShaderProgram * loadShader(const std::string &type="normal");
 
 private:
     std::string getClassName();

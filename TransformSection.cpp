@@ -11,7 +11,7 @@ TransformSection::TransformSection(const std::string &type)
 
 void TransformSection::prepare()
 {
-    loadShader(m_type);
+    m_program = loadShader(m_type);
 
     prepareTextureUnit();
 }

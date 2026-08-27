@@ -9,7 +9,7 @@ RectangleSection::RectangleSection(const std::string &type) : SectionBase(type)
 
 void RectangleSection::prepare()
 {
-    loadShader(m_type);
+    m_program = loadShader(m_type);
     if(m_type == "EBO")
     {
         prepareEBO();

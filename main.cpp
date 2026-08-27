@@ -120,6 +120,7 @@ void showMenu()
     cout<< "12. Camera"<< endl;
     cout<< "13. Camera Keyboard"<< endl;
     cout<< "14. Camera Mouse"<< endl;
+    cout<< "15. Triangle Double Program"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -171,6 +172,9 @@ SectionBase* createSection(int choice)
         break;
     case 14:
         section = new CameraSection("mouse");
+        break;
+    case 15:
+        section = new TriangleSection("doubleProgram");
         break;
 
     default:

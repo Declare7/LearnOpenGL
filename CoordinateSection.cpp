@@ -14,7 +14,7 @@ CoordinateSection::CoordinateSection(const std::string &type)
 
 void CoordinateSection::prepare()
 {
-    loadShader(m_type);
+    m_program = loadShader(m_type);
     if(m_type == "3D")
     {
         prepare3D();
