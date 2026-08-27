@@ -27,7 +27,7 @@ void CameraSection::prepare()
 
 void CameraSection::render()
 {
-    m_program->useProgram();
+    m_program->use();
 
     if(m_type == "normal")
     {

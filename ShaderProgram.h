@@ -9,7 +9,7 @@ class ShaderProgram
 public:
     ShaderProgram(const std::string &path, const std::string &name);
 
-    void useProgram();
+    void use();
 
     void setUniform(const std::string &name, int value);
 

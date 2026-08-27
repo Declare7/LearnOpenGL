@@ -18,7 +18,7 @@ void TransformSection::prepare()
 
 void TransformSection::render()
 {
-    m_program->useProgram();
+    m_program->use();
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0));
     trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));

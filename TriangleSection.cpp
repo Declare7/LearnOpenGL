@@ -56,7 +56,7 @@ void TriangleSection::render()
     else
     {
         // draw our first triangle
-        m_program->useProgram();
+        m_program->use();
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time
     }
@@ -64,7 +64,7 @@ void TriangleSection::render()
 
 void TriangleSection::renderUniform()
 {
-    m_program->useProgram();
+    m_program->use();
 
     float timeVal = glfwGetTime();
     float greenVal = sin(timeVal)/ 2.0f + 0.5f;

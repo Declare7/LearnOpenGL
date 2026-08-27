@@ -23,7 +23,7 @@ void CoordinateSection::prepare()
     {
         prepareTextureUnit();
 
-        m_program->useProgram();
+        m_program->use();
         //model mat
         glm::mat4 model = glm::mat4(1.0);
         model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0, 0.0, 0.0));
@@ -52,7 +52,7 @@ void CoordinateSection::render()
     }
     else
     {
-        m_program->useProgram();
+        m_program->use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 }
@@ -163,7 +163,7 @@ void CoordinateSection::prepare3D()
     }
     stbi_image_free(data);
 
-    m_program->useProgram();
+    m_program->use();
     m_program->setUniform("texture0", 0);
     m_program->setUniform("texture1", 1);
 
@@ -172,7 +172,7 @@ void CoordinateSection::prepare3D()
 
 void CoordinateSection::render3D()
 {
-    m_program->useProgram();
+    m_program->use();
 
     glm::mat4 view = glm::mat4(1.0);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -7.0f));

@@ -52,7 +52,7 @@ void RectangleSection::prepare()
 
 void RectangleSection::render()
 {
-    m_program->useProgram();
+    m_program->use();
     if(m_type == "EBO")
     {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -258,7 +258,7 @@ void RectangleSection::prepareTextureUnit()
     }
     stbi_image_free(data);
 
-    m_program->useProgram();
+    m_program->use();
     m_program->setUniform("texture0", 0);
     m_program->setUniform("texture1", 1);
 

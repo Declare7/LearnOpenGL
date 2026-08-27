@@ -9,7 +9,7 @@ ShaderProgram::ShaderProgram(const std::string &path, const std::string &name)
     initialize(path, name);
 }
 
-void ShaderProgram::useProgram()
+void ShaderProgram::use()
 {
     glUseProgram(m_shaderProgram);
 }
