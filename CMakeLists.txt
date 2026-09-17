@@ -92,6 +92,8 @@ set(SOURCE_FILES
     shader/RectangleSection/texture.vert
     shader/RectangleSection/textureUnit.frag
     shader/RectangleSection/textureUnit.vert
+    shader/RectangleSection/textureMirror.frag
+    shader/RectangleSection/textureMirror.vert
     shader/TransformSection/normal.frag
     shader/TransformSection/normal.vert
     shader/CoordinateSection/normal.frag
@@ -99,9 +101,11 @@ set(SOURCE_FILES
     shader/CoordinateSection/3D.frag
     shader/CoordinateSection/3D.vert
     shader/CameraSection/normal.frag
-    shader/CameraSection/normal.vert)
+    shader/CameraSection/normal.vert
+)
 
-add_executable(OpenGLDemo ${SOURCE_FILES})
+add_executable(OpenGLDemo ${SOURCE_FILES}
+)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

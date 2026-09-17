@@ -123,6 +123,7 @@ void showMenu()
     cout<< "15. Triangle Double Program"<< endl;
     cout<< "16. Triangle Uniform Custom"<< endl;
     cout<< "17. Triangle Vertex Be Frag"<< endl;
+    cout<< "18. Texture Mirror"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -183,6 +184,9 @@ SectionBase* createSection(int choice)
         break;
     case 17:
         section = new TriangleSection("vertexBeFrag");
+        break;
+    case 18:
+        section = new RectangleSection("textureMirror");
         break;
 
     default:

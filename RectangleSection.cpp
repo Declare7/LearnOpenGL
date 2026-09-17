@@ -18,7 +18,7 @@ void RectangleSection::prepare()
     {
         prepareTexture();
     }
-    else if(m_type == "textureUnit")
+    else if(m_type == "textureUnit" || m_type == "textureMirror")
     {
         prepareTextureUnit();
     }
@@ -61,7 +61,7 @@ void RectangleSection::render()
     {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
-    else if(m_type == "textureUnit")
+    else if(m_type == "textureUnit" || m_type == "textureMirror")
     {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
@@ -205,7 +205,7 @@ void RectangleSection::prepareTextureUnit()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    //vertex attribution
+    //vertex attribution (for layout(location) in shader program)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
