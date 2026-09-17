@@ -20,6 +20,12 @@ void ShaderProgram::setUniform(const std::string &name, int value)
     glUniform1i(location, value);
 }
 
+void ShaderProgram::setUniform(const std::string &name, float value)
+{
+    auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
+    glUniform1f(location, value);
+}
+
 void ShaderProgram::setUniform(const std::string &name, const glm::mat4 &value)
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());

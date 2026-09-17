@@ -1,5 +1,6 @@
 #include "RectangleSection.h"
 #include "glad/glad.h"
+#include <GLFW/glfw3.h>
 #include "3rd/stb/stb_image.h"
 
 RectangleSection::RectangleSection(const std::string &type) : SectionBase(type)
@@ -68,6 +69,43 @@ void RectangleSection::render()
     else
     {
         glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+}
+
+void RectangleSection::processInput(GLFWwindow *window)
+{
+    if(m_type != "textureUnit")
+    {
+        return;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_UP))
+    {
+        float deltaTime = glfwGetTime() - m_lastTime;
+        m_lastTime = glfwGetTime();
+        if(deltaTime< 0.1)
+        {
+            return;
+        }
+
+        m_mixRatio += 0.1;
+        m_mixRatio = fmin(m_mixRatio, 1.0);
+        m_program->use();
+        m_program->setUniform("mixRatio", m_mixRatio);
+    }
+    else if(glfwGetKey(window, GLFW_KEY_DOWN))
+    {
+        float deltaTime = glfwGetTime() - m_lastTime;
+        m_lastTime = glfwGetTime();
+        if(deltaTime< 0.1)
+        {
+            return;
+        }
+
+        m_mixRatio -= 0.1;
+        m_mixRatio = fmax(m_mixRatio, 0.0);
+        m_program->use();
+        m_program->setUniform("mixRatio", m_mixRatio);
     }
 }
 
@@ -261,6 +299,7 @@ void RectangleSection::prepareTextureUnit()
     m_program->use();
     m_program->setUniform("texture0", 0);
     m_program->setUniform("texture1", 1);
+    m_program->setUniform("mixRatio", m_mixRatio);
 
     //unbind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
