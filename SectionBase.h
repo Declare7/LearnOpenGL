@@ -20,7 +20,7 @@ public:
     virtual void processWheel(double xOffset, double yOffset){};
 
 protected:
-    ShaderProgram * loadShader(const std::string &type="normal");
+    std::shared_ptr<ShaderProgram> loadShader(const std::string &type="normal");
 
 private:
     std::string getClassName();
@@ -28,7 +28,8 @@ private:
 protected:
     std::string m_type{""};
     unsigned int m_VAO{0};
-    ShaderProgram *m_program{nullptr};
+    // ShaderProgram *m_shader{nullptr};
+    std::shared_ptr<ShaderProgram> m_shader;
 };
 
 #endif // SECTIONBASE_H

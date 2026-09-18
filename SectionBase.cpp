@@ -16,19 +16,16 @@ SectionBase::SectionBase(const std::string &type)
 
 SectionBase::~SectionBase()
 {
-    if(m_program != nullptr)
-    {
-        delete m_program;
-    }
+
 }
 
-ShaderProgram *SectionBase::loadShader(const std::string &type)
+std::shared_ptr<ShaderProgram> SectionBase::loadShader(const std::string &type)
 {
     std::string path = "shader";
     path = SOURCE_PATH;
     path = path + "/shader/" + getClassName() + "/";
 
-    return new ShaderProgram(path, type);
+    return std::make_shared<ShaderProgram>(path, type);
 }
 
 std::string SectionBase::getClassName()

@@ -10,15 +10,12 @@ TriangleSection::TriangleSection(const std::string &type) : SectionBase(type)
 
 TriangleSection::~TriangleSection()
 {
-    if(m_program2 != nullptr)
-    {
-        delete m_program2;
-    }
+
 }
 
 void TriangleSection::prepare()
 {
-    m_program = loadShader(m_type);
+    m_shader = loadShader(m_type);
     if(m_type == "colors")
     {
         prepareColors();
@@ -74,18 +71,18 @@ void TriangleSection::render()
     {
         // draw our first triangle
         glBindVertexArray(m_VAO);
-        m_program->use();
+        m_shader->use();
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time
 
         glBindVertexArray(m_VAO2);
-        m_program2->use();
+        m_shader2->use();
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
     else
     {
         // draw our first triangle
-        m_program->use();
+        m_shader->use();
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindVertexArray(0); // no need to unbind it every time
     }
@@ -93,11 +90,11 @@ void TriangleSection::render()
 
 void TriangleSection::renderUniform()
 {
-    m_program->use();
+    m_shader->use();
 
     float timeVal = glfwGetTime();
     float greenVal = sin(timeVal)/ 2.0f + 0.5f;
-    m_program->setUniform("uniColor", 0.0f, greenVal, 0.0f, 1.0f);
+    m_shader->setUniform("uniColor", 0.0f, greenVal, 0.0f, 1.0f);
 
     // glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -151,7 +148,7 @@ void TriangleSection::prepareDoubleProgram()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     //second triangle
-    m_program2 = loadShader("normal");
+    m_shader2 = loadShader("normal");
     float vertices2[] = {
         0.7, 0.3, 0.0,
         0.1, 0.9, 0.0,
@@ -174,6 +171,6 @@ void TriangleSection::prepareDoubleProgram()
 
 void TriangleSection::prepareUniformCustom()
 {
-    m_program->use();
-    m_program->setUniform("moveRight", 0.5, 0.0, 0.0);
+    m_shader->use();
+    m_shader->setUniform("moveRight", 0.5, 0.0, 0.0);
 }

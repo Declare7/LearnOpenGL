@@ -14,7 +14,7 @@ CameraSection::CameraSection(const std::string &type)
 
 void CameraSection::prepare()
 {
-    m_program = loadShader();
+    m_shader = loadShader();
     prepare3D();
 
     if(m_type == "keyboard" || m_type == "mouse")
@@ -27,7 +27,7 @@ void CameraSection::prepare()
 
 void CameraSection::render()
 {
-    m_program->use();
+    m_shader->use();
 
     if(m_type == "normal")
     {
@@ -37,12 +37,12 @@ void CameraSection::render()
     {
         glm::mat4 view = glm::mat4(1.0);
         view = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
-        m_program->setUniform("view", view);
+        m_shader->setUniform("view", view);
     }
 
     glm::mat4 projection = glm::mat4(1.0);
     projection = glm::perspective(glm::radians(m_fov), 800.0f/600, 0.1f, 100.0f);
-    m_program->setUniform("projection", projection);
+    m_shader->setUniform("projection", projection);
 
     glm::vec3 cubePosition[] = {
         glm::vec3(0.0, 0.0, 0.0),
@@ -62,7 +62,7 @@ void CameraSection::render()
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, cubePosition[i]);
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(20.0f * (i+1)), glm::vec3(1.0f, 0.5f, 0.3f));
-        m_program->setUniform("model", model);
+        m_shader->setUniform("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
@@ -163,5 +163,5 @@ void CameraSection::renderAround()
     float cameraX = sin(glfwGetTime()) * radius;
     float cameraZ = cos(glfwGetTime()) * radius;
     view = glm::lookAt(glm::vec3(cameraX, 0.0f, cameraZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    m_program->setUniform("view", view);
+    m_shader->setUniform("view", view);
 }

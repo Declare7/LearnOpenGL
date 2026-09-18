@@ -20,7 +20,7 @@ private:
 
 private:
     unsigned int m_VAO2{0};
-    ShaderProgram *m_program2{nullptr};
+    std::shared_ptr<ShaderProgram> m_shader2;
 };
 
 #endif // TRIANGLESECTION_H

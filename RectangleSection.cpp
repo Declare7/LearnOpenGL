@@ -10,7 +10,7 @@ RectangleSection::RectangleSection(const std::string &type) : SectionBase(type)
 
 void RectangleSection::prepare()
 {
-    m_program = loadShader(m_type);
+    m_shader = loadShader(m_type);
     if(m_type == "EBO")
     {
         prepareEBO();
@@ -53,7 +53,7 @@ void RectangleSection::prepare()
 
 void RectangleSection::render()
 {
-    m_program->use();
+    m_shader->use();
     if(m_type == "EBO")
     {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -90,8 +90,8 @@ void RectangleSection::processInput(GLFWwindow *window)
 
         m_mixRatio += 0.1;
         m_mixRatio = fmin(m_mixRatio, 1.0);
-        m_program->use();
-        m_program->setUniform("mixRatio", m_mixRatio);
+        m_shader->use();
+        m_shader->setUniform("mixRatio", m_mixRatio);
     }
     else if(glfwGetKey(window, GLFW_KEY_DOWN))
     {
@@ -104,8 +104,8 @@ void RectangleSection::processInput(GLFWwindow *window)
 
         m_mixRatio -= 0.1;
         m_mixRatio = fmax(m_mixRatio, 0.0);
-        m_program->use();
-        m_program->setUniform("mixRatio", m_mixRatio);
+        m_shader->use();
+        m_shader->setUniform("mixRatio", m_mixRatio);
     }
 }
 
@@ -296,10 +296,10 @@ void RectangleSection::prepareTextureUnit()
     }
     stbi_image_free(data);
 
-    m_program->use();
-    m_program->setUniform("texture0", 0);
-    m_program->setUniform("texture1", 1);
-    m_program->setUniform("mixRatio", m_mixRatio);
+    m_shader->use();
+    m_shader->setUniform("texture0", 0);
+    m_shader->setUniform("texture1", 1);
+    m_shader->setUniform("mixRatio", m_mixRatio);
 
     //unbind VBO
     glBindBuffer(GL_ARRAY_BUFFER, 0);

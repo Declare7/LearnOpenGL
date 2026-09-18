@@ -14,7 +14,7 @@ CoordinateSection::CoordinateSection(const std::string &type)
 
 void CoordinateSection::prepare()
 {
-    m_program = loadShader(m_type);
+    m_shader = loadShader(m_type);
     if(m_type == "3D")
     {
         prepare3D();
@@ -23,24 +23,24 @@ void CoordinateSection::prepare()
     {
         prepareTextureUnit();
 
-        m_program->use();
+        m_shader->use();
         //model mat
         glm::mat4 model = glm::mat4(1.0);
         model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0, 0.0, 0.0));
 
-        m_program->setUniform("model", model);
+        m_shader->setUniform("model", model);
 
         //view mat
         glm::mat4 view = glm::mat4(1.0);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-        m_program->setUniform("view", view);
+        m_shader->setUniform("view", view);
 
         //projection mat
         glm::mat4 projection = glm::mat4(1.0);
         projection = glm::perspective(glm::radians(45.0f), 800.0f/600, 0.1f, 100.0f);
 
-        m_program->setUniform("projection", projection);
+        m_shader->setUniform("projection", projection);
     }
 }
 
@@ -52,7 +52,7 @@ void CoordinateSection::render()
     }
     else
     {
-        m_program->use();
+        m_shader->use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 }
@@ -163,24 +163,24 @@ void CoordinateSection::prepare3D()
     }
     stbi_image_free(data);
 
-    m_program->use();
-    m_program->setUniform("texture0", 0);
-    m_program->setUniform("texture1", 1);
+    m_shader->use();
+    m_shader->setUniform("texture0", 0);
+    m_shader->setUniform("texture1", 1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void CoordinateSection::render3D()
 {
-    m_program->use();
+    m_shader->use();
 
     glm::mat4 view = glm::mat4(1.0);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -7.0f));
-    m_program->setUniform("view", view);
+    m_shader->setUniform("view", view);
 
     glm::mat4 projection = glm::mat4(1.0);
     projection = glm::perspective(glm::radians(45.0f), 800.0f/600, 0.1f, 100.0f);
-    m_program->setUniform("projection", projection);
+    m_shader->setUniform("projection", projection);
 
     glm::vec3 cubePosition[] = {
         glm::vec3(0.0, 0.0, 0.0),
@@ -200,7 +200,7 @@ void CoordinateSection::render3D()
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, cubePosition[i]);
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(20.0f * (i+1)), glm::vec3(1.0f, 0.5f, 0.3f));
-        m_program->setUniform("model", model);
+        m_shader->setUniform("model", model);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
