@@ -105,6 +105,12 @@ set(SOURCE_FILES
 )
 
 add_executable(OpenGLDemo ${SOURCE_FILES}
+    LightSection.h LightSection.cpp
+    shader/LightSection/normal.frag
+    shader/LightSection/normal.vert
+    shader/LightSection/lightSource.frag
+    shader/LightSection/lightSource.vert
+    Camera.h Camera.cpp
 )
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)

@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "LightSection.h"
 #include "TriangleSection.h"
 #include "RectangleSection.h"
 #include "TransformSection.h"
@@ -124,6 +125,7 @@ void showMenu()
     cout<< "16. Triangle Uniform Custom"<< endl;
     cout<< "17. Triangle Vertex Be Frag"<< endl;
     cout<< "18. Texture Mirror"<< endl;
+    cout<< "19. Light"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -187,6 +189,9 @@ SectionBase* createSection(int choice)
         break;
     case 18:
         section = new RectangleSection("textureMirror");
+        break;
+    case 19:
+        section = new LightSection();
         break;
 
     default:

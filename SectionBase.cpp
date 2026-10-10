@@ -19,13 +19,13 @@ SectionBase::~SectionBase()
 
 }
 
-std::shared_ptr<ShaderProgram> SectionBase::loadShader(const std::string &type)
+std::unique_ptr<ShaderProgram> SectionBase::loadShader(const std::string &type)
 {
     std::string path = "shader";
     path = SOURCE_PATH;
     path = path + "/shader/" + getClassName() + "/";
 
-    return std::make_shared<ShaderProgram>(path, type);
+    return std::make_unique<ShaderProgram>(path, type);
 }
 
 std::string SectionBase::getClassName()

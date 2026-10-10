@@ -142,11 +142,8 @@ void CameraSection::processWheel(double xOffset, double yOffset)
         return;
     }
 
-    if(m_fov>= 1.0f && m_fov<= 60.0f)
-    {
-        m_fov -= yOffset;
-    }
-    else if(m_fov< 1.0f)
+    m_fov -= yOffset;
+    if(m_fov< 1.0f)
     {
         m_fov = 1.0f;
     }
