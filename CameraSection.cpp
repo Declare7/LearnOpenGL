@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 CameraSection::CameraSection(const std::string &type)
     : CoordinateSection(type)
@@ -128,11 +129,17 @@ void CameraSection::processMouse(double msX, double msY)
     else if(m_pitch< -89.0f)
         m_pitch = -89.0f;
 
+    std::cout<< m_yaw<< " "<< m_pitch<< std::endl;
+
+    m_pitch = 0.0f;
+    m_yaw = -90.0f;
     glm::vec3 front;
     front.x = cos(glm::radians(m_pitch)) * cos(glm::radians(m_yaw));
     front.y = sin(glm::radians(m_pitch));
     front.z = cos(glm::radians(m_pitch)) * sin(glm::radians(m_yaw));
     m_cameraFront = glm::normalize(front);
+
+    std::cout<< m_cameraFront.x<< " "<< m_cameraFront.y<< " "<< m_cameraFront.z<< std::endl;
 }
 
 void CameraSection::processWheel(double xOffset, double yOffset)

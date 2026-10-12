@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <glm/ext/matrix_transform.hpp>
+#include <iostream>
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 front, float yaw, float pitch, float zoom)
     : m_position(position),
@@ -20,6 +21,11 @@ float Camera::getZoom() const
 glm::mat4 Camera::getViewMetrix() const
 {
     return glm::lookAt(m_position, m_position + m_front, m_up);
+}
+
+glm::vec3 Camera::getPosition() const
+{
+    return m_position;
 }
 
 void Camera::setMovementSpeed(float speed)
@@ -86,11 +92,11 @@ void Camera::onZoomed(float offset)
 void Camera::update()
 {
     glm::vec3 front;
-    front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    front.x = cos(glm::radians(m_pitch)) * cos(glm::radians(m_yaw));
     front.y = sin(glm::radians(m_pitch));
-    front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    front.z = cos(glm::radians(m_pitch)) * sin(glm::radians(m_yaw));
     m_front = glm::normalize(front);
 
     m_right = glm::normalize(glm::cross(m_front, m_worldUp));
-    m_up = glm::normalize(glm::cross(m_front, m_right));
+    m_up = glm::normalize(glm::cross(m_right, m_front));
 }

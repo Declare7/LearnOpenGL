@@ -26,6 +26,8 @@ public:
 
     glm::mat4 getViewMetrix() const;
 
+    glm::vec3 getPosition() const;
+
     void setMovementSpeed(float speed);
 
     void setScrolledSensitivity(float sensitivity);
