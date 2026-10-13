@@ -1,12 +1,36 @@
 #include "LightSection.h"
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
 
 LightSection::LightSection(const std::string &type) : SectionBase(type)
 {
-    m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 5.0f));
+    m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
+}
+
+void LightSection::processInput(GLFWwindow *window)
+{
+    float deltaTime = glfwGetTime() - m_lastTime;
+    m_lastTime = glfwGetTime();
+
+    if(glfwGetKey(window, GLFW_KEY_W))
+    {
+        m_camera->onMoved(Camera::MOVE_FORWARD, deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_S))
+    {
+        m_camera->onMoved(Camera::MOVE_BACKWARD, deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_A))
+    {
+        m_camera->onMoved(Camera::MOVE_LEFT, deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_D))
+    {
+        m_camera->onMoved(Camera::MOVE_RIGHT, deltaTime);
+    }
 }
 
 void LightSection::processMouse(double msX, double msY)
@@ -17,6 +41,11 @@ void LightSection::processMouse(double msX, double msY)
     m_lastMouseY = msY;
 
     m_camera->onScrolled(xOffset, yOffset);
+}
+
+void LightSection::processWheel(double xOffset, double yOffset)
+{
+    m_camera->onZoomed(yOffset);
 }
 
 void LightSection::prepare()
@@ -116,13 +145,13 @@ void LightSection::render()
     glEnable(GL_MULTISAMPLE);
     m_shader->use();
 
-    glm::vec3 lightPos(1.5f, 0.5f, 1.0f);
+    glm::vec3 lightPos(1.2f, 0.5f, 2.0f);
     m_shader->setUniform("lightPos", lightPos.x, lightPos.y, lightPos.z);
     m_shader->setUniform("viewPos", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
 
     glm::mat4 model = glm::mat4(1.0);
-    model = glm::rotate(model, glm::radians(15.0f), glm::vec3(0.1f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(0.0f, 0.1f, 0.0f));
+    // model = glm::rotate(model, glm::radians(15.0f), glm::vec3(0.1f, 0.0f, 0.0f));
+    // model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(0.0f, 0.1f, 0.0f));
     m_shader->setUniform("model", model);
 
     glm::mat4 view = glm::mat4(1.0);

@@ -10,7 +10,9 @@ class LightSection : public SectionBase
 public:
     explicit LightSection(const std::string &type="normal");
 
-    virtual void processMouse(double msX, double msY) override;
+    void processInput(GLFWwindow *window) override;
+    void processMouse(double msX, double msY) override;
+    void processWheel(double xOffset, double yOffset) override;
 
 public:
     virtual void prepare() override;
@@ -22,6 +24,7 @@ protected:
     unsigned int m_lightVAO{0};
     double m_lastMouseX{400.0};
     double m_lastMouseY{300.0};
+    float m_lastTime{0.0};
 };
 
 #endif // LIGHTSECTION_H
