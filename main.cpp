@@ -54,7 +54,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    if(choice == 12 || choice == 13 || choice == 14 || choice == 19)
+    if(choice == 12 || choice == 13 || choice == 14 || choice == 19 || choice == 20)
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwSetCursorPosCallback(window, mouse_callback);
@@ -127,6 +127,7 @@ void showMenu()
     cout<< "17. Triangle Vertex Be Frag"<< endl;
     cout<< "18. Texture Mirror"<< endl;
     cout<< "19. Light"<< endl;
+    cout<< "20. Material"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -193,6 +194,9 @@ SectionBase* createSection(int choice)
         break;
     case 19:
         section = new LightSection();
+        break;
+    case 20:
+        section = new LightSection("material");
         break;
 
     default:

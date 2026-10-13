@@ -25,6 +25,7 @@ protected:
     double m_lastMouseX{400.0};
     double m_lastMouseY{300.0};
     float m_lastTime{0.0};
+    glm::vec3 m_lightPos{1.2f, 0.5f, 2.0f};
 };
 
 #endif // LIGHTSECTION_H

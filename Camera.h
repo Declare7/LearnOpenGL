@@ -53,7 +53,7 @@ private:
     float m_zoom{0.0};
 
     float m_movementSpeed{2.5f};
-    float m_scrolledSensitivity{0.1f};
+    float m_scrolledSensitivity{0.05f};
 };
 
 #endif // CAMERA_H

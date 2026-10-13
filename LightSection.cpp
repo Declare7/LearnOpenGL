@@ -133,25 +133,36 @@ void LightSection::prepare()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     m_shader->use();
-    m_shader->setUniform("objectColor", 1.0f, 0.5f, 0.31f);
-    m_shader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
+    if(m_type == "material")
+    {
+        m_shader->setUniform("material.ambient", 0.135f, 0.2225f, 0.1575f);
+        m_shader->setUniform("material.diffuse", 0.54f, 0.89f, 0.63f);
+        m_shader->setUniform("material.specular", 0.316228f, 0.316228f, 0.316228f);
+        m_shader->setUniform("material.shininess", 25.6f);
+
+        m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
+        m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
+        m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
+        m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+    }
+    else
+    {
+        m_shader->setUniform("lightPos", m_lightPos.x, m_lightPos.y, m_lightPos.z);
+        m_shader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
+        m_shader->setUniform("objectColor", 1.0f, 0.5f, 0.31f);
+    }
 }
 
 void LightSection::render()
 {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glEnable(GL_MULTISAMPLE);
-    m_shader->use();
 
-    glm::vec3 lightPos(1.2f, 0.5f, 2.0f);
-    m_shader->setUniform("lightPos", lightPos.x, lightPos.y, lightPos.z);
+    m_shader->use();
     m_shader->setUniform("viewPos", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
 
     glm::mat4 model = glm::mat4(1.0);
-    // model = glm::rotate(model, glm::radians(15.0f), glm::vec3(0.1f, 0.0f, 0.0f));
-    // model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(0.0f, 0.1f, 0.0f));
     m_shader->setUniform("model", model);
 
     glm::mat4 view = glm::mat4(1.0);
@@ -169,7 +180,7 @@ void LightSection::render()
     m_lightShader->use();
 
     model = glm::mat4(1.0);
-    model = glm::translate(model, lightPos);
+    model = glm::translate(model, m_lightPos);
     model = glm::scale(model, glm::vec3(0.2f));
 
     m_lightShader->setUniform("model", model);

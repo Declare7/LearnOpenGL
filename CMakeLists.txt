@@ -113,6 +113,8 @@ add_executable(OpenGLDemo ${SOURCE_FILES}
     Camera.h Camera.cpp
     learnopengl/shader_m.h
     learnopengl/camera.h
+    shader/LightSection/material.frag
+    shader/LightSection/material.vert
 )
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
