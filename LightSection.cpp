@@ -172,7 +172,7 @@ void LightSection::render()
 
     m_shader->use();
     m_shader->setUniform("viewPos", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
-    glm::vec3 lightColor;
+    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
     if(m_type == "lightChanged")
     {
         lightColor.x = sin(glfwGetTime() * 2.0f);
