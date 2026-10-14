@@ -6,7 +6,7 @@
 class RectangleSection : public SectionBase
 {
 public:
-    RectangleSection(const std::string &type="normal");
+    RectangleSection(const std::string &type="normal", bool supportInput=false);
 
     void prepare() override;
     void render() override;

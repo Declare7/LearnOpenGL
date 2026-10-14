@@ -6,7 +6,7 @@
 class CoordinateSection : public RectangleSection
 {
 public:
-    CoordinateSection(const std::string &type="normal");
+    CoordinateSection(const std::string &type="normal", bool supportInput=false);
 
     void prepare() override;
     void render() override;

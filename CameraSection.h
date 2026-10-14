@@ -7,7 +7,7 @@
 class CameraSection : public CoordinateSection
 {
 public:
-    CameraSection(const std::string &type="normal");
+    CameraSection(const std::string &type="normal", bool supportInput=true);
 
     void prepare() override;
     void render() override;
@@ -25,7 +25,7 @@ protected:
     double m_lastMouseX{400.0};
     double m_lastMouseY{300.0};
     float m_pitch{0.0};
-    float m_yaw{0.0};
+    float m_yaw{-90.0};
 
     float m_fov{45.0};
 };

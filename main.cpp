@@ -54,12 +54,6 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    if(choice == 12 || choice == 13 || choice == 14 || choice == 19 || choice == 20 || choice == 21)
-    {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        glfwSetCursorPosCallback(window, mouse_callback);
-        glfwSetScrollCallback(window, wheel_callback);
-    }
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -74,6 +68,13 @@ int main()
     {
         cout<< "Invalid Input."<< endl;
         return -1;
+    }
+
+    if(section->supportInput())
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetCursorPosCallback(window, mouse_callback);
+        glfwSetScrollCallback(window, wheel_callback);
     }
 
     // render loop
@@ -129,6 +130,7 @@ void showMenu()
     cout<< "19. Light"<< endl;
     cout<< "20. Material"<< endl;
     cout<< "21. Light Changed"<< endl;
+    cout<< "22. Light Texture"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -201,6 +203,9 @@ SectionBase* createSection(int choice)
         break;
     case 21:
         section = new LightSection("lightChanged");
+        break;
+    case 22:
+        section = new LightSection("texture");
         break;
 
     default:

@@ -6,8 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "3rd/stb/stb_image.h"
 
-CoordinateSection::CoordinateSection(const std::string &type)
-    : RectangleSection(type)
+CoordinateSection::CoordinateSection(const std::string &type, bool supportInput)
+    : RectangleSection(type, supportInput)
 {
 
 }

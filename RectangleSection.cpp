@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "3rd/stb/stb_image.h"
 
-RectangleSection::RectangleSection(const std::string &type) : SectionBase(type)
+RectangleSection::RectangleSection(const std::string &type, bool supportInput) : SectionBase(type, supportInput)
 {
 
 }

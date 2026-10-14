@@ -9,8 +9,10 @@ class GLFWwindow;
 class SectionBase
 {
 public:
-    SectionBase(const std::string &type);
+    SectionBase(const std::string &type, bool supportInput=false);
     virtual ~SectionBase();
+
+    bool supportInput();
 
 public:
     virtual void prepare()=0;
@@ -29,6 +31,7 @@ protected:
     std::string m_type{""};
     unsigned int m_VAO{0};
     std::unique_ptr<ShaderProgram> m_shader;
+    bool m_supportInput{false};
 };
 
 #endif // SECTIONBASE_H

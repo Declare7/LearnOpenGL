@@ -8,7 +8,7 @@ class Camera;
 class LightSection : public SectionBase
 {
 public:
-    explicit LightSection(const std::string &type="normal");
+    explicit LightSection(const std::string &type="normal", bool supportInput=true);
 
     void processInput(GLFWwindow *window) override;
     void processMouse(double msX, double msY) override;

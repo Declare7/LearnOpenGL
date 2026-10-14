@@ -8,8 +8,9 @@
 
 #include "glad/glad.h"
 
-SectionBase::SectionBase(const std::string &type)
-    : m_type(type)
+SectionBase::SectionBase(const std::string &type, bool supportInput)
+    : m_type(type),
+    m_supportInput(supportInput)
 {
 
 }
@@ -17,6 +18,11 @@ SectionBase::SectionBase(const std::string &type)
 SectionBase::~SectionBase()
 {
 
+}
+
+bool SectionBase::supportInput()
+{
+    return m_supportInput;
 }
 
 std::unique_ptr<ShaderProgram> SectionBase::loadShader(const std::string &type)

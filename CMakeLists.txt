@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(OpenGLDemo LANGUAGES CXX C)
+project(LearnOpenGL LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -115,6 +115,8 @@ add_executable(OpenGLDemo ${SOURCE_FILES}
     learnopengl/camera.h
     shader/LightSection/material.frag
     shader/LightSection/material.vert
+    shader/LightSection/texture.frag
+    shader/LightSection/texture.vert
 )
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)

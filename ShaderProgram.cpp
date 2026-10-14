@@ -97,6 +97,7 @@ std::string ShaderProgram::readShader(const std::string &name, const std::string
     std::fstream fs(path, std::ios::in | std::ios::binary | std::ios::ate);
     if(!fs.is_open())
     {
+        std::cout<< "can not open path: "<< path << std::endl;
         return "";
     }
 

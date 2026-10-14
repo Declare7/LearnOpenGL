@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
 
-LightSection::LightSection(const std::string &type) : SectionBase(type)
+LightSection::LightSection(const std::string &type, bool supportInput) : SectionBase(type, supportInput)
 {
     m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
 }
@@ -141,7 +141,7 @@ void LightSection::prepare()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     m_shader->use();
-    if(m_type == "material" || m_type == "lightChanged")
+    if(m_type == "material" || m_type == "lightChanged" || m_type == "texture")
     {
         m_shader->setUniform("material.ambient", 0.135f, 0.2225f, 0.1575f);
         m_shader->setUniform("material.diffuse", 0.54f, 0.89f, 0.63f);
