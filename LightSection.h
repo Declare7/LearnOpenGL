@@ -18,6 +18,8 @@ public:
     virtual void prepare() override;
     virtual void render() override;
 
+    void prepareTexture();
+
 protected:
     std::unique_ptr<ShaderProgram> m_lightShader;
     std::unique_ptr<Camera> m_camera;

@@ -69,6 +69,11 @@ set(SOURCE_FILES
     ShaderProgram.h
     ShaderProgram.cpp
 
+    LightSection.h LightSection.cpp
+    Camera.h Camera.cpp
+    learnopengl/shader_m.h
+    learnopengl/camera.h
+
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
     shader/TriangleSection/shader.vert
@@ -94,6 +99,7 @@ set(SOURCE_FILES
     shader/RectangleSection/textureUnit.vert
     shader/RectangleSection/textureMirror.frag
     shader/RectangleSection/textureMirror.vert
+
     shader/TransformSection/normal.frag
     shader/TransformSection/normal.vert
     shader/CoordinateSection/normal.frag
@@ -102,22 +108,18 @@ set(SOURCE_FILES
     shader/CoordinateSection/3D.vert
     shader/CameraSection/normal.frag
     shader/CameraSection/normal.vert
-)
 
-add_executable(OpenGLDemo ${SOURCE_FILES}
-    LightSection.h LightSection.cpp
     shader/LightSection/normal.frag
     shader/LightSection/normal.vert
     shader/LightSection/lightSource.frag
     shader/LightSection/lightSource.vert
-    Camera.h Camera.cpp
-    learnopengl/shader_m.h
-    learnopengl/camera.h
     shader/LightSection/material.frag
     shader/LightSection/material.vert
     shader/LightSection/texture.frag
     shader/LightSection/texture.vert
 )
+
+add_executable(OpenGLDemo ${SOURCE_FILES})
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 
