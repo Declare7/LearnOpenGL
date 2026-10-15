@@ -65,7 +65,7 @@ void LightSection::prepare()
     m_lightShader->use();
     m_lightShader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
 
-    if(m_type == "texture")
+    if(m_type == "texture" || m_type == "lightDirection" || m_type == "lightPoint")
     {
         prepareTexture();
         return;
@@ -169,6 +169,7 @@ void LightSection::render()
     m_shader->use();
     m_shader->setUniform("viewPos", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
     glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+
     if(m_type == "lightChanged")
     {
         lightColor.x = sin(glfwGetTime() * 2.0f);
@@ -180,6 +181,16 @@ void LightSection::render()
 
         m_shader->setUniform("light.ambient", ambientColor.x, ambientColor.y, ambientColor.z);
         m_shader->setUniform("light.diffuse", diffuseColor.x, diffuseColor.y, diffuseColor.z);
+    }
+    else if(m_type == "lightDirection")
+    {
+        renderDirection();
+        return;
+    }
+    else if(m_type == "lightPoint")
+    {
+        renderPoint();
+        return;
     }
 
     glm::mat4 model = glm::mat4(1.0);
@@ -197,7 +208,6 @@ void LightSection::render()
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     //light
-    m_lightShader->use();
     m_lightShader->use();
     m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
 
@@ -340,5 +350,107 @@ void LightSection::prepareTexture()
     m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
     m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
     m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
-    m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+
+    if(m_type == "lightDirection")
+    {
+        m_shader->setUniform("light.direction", -0.2f, -1.0f, -0.3f);
+    }
+    else if(m_type == "lightPoint")
+    {
+        m_shader->setUniform("light.constant", 1.0f);
+        m_shader->setUniform("light.linear", 0.09f);
+        m_shader->setUniform("light.quadratic", 0.032f);
+    }
+    else
+    {
+        m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+    }
+}
+
+void LightSection::renderDirection()
+{
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
+
+    glm::mat4 view = glm::mat4(1.0);
+    view = m_camera->getViewMetrix();
+    m_shader->setUniform("view", view);
+
+    glm::mat4 projection = glm::mat4(1.0);
+    projection = glm::perspective(glm::radians(m_camera->getZoom()), 800.0f/600, 0.1f, 100.0f);
+    m_shader->setUniform("projection", projection);
+
+    for(int i= 0; i< 10; ++i)
+    {
+        glm::mat4 model = glm::mat4(1.0);
+        model = glm::translate(model, cubePositions[i]);
+        float angle = 20.f * i;
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        m_shader->setUniform("model", model);
+
+        glBindVertexArray(m_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+}
+
+void LightSection::renderPoint()
+{
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
+
+    glm::mat4 view = glm::mat4(1.0);
+    view = m_camera->getViewMetrix();
+    m_shader->setUniform("view", view);
+
+    glm::mat4 projection = glm::mat4(1.0);
+    projection = glm::perspective(glm::radians(m_camera->getZoom()), 800.0f/600, 0.1f, 100.0f);
+    m_shader->setUniform("projection", projection);
+
+    for(int i= 0; i< 10; ++i)
+    {
+        glm::mat4 model = glm::mat4(1.0);
+        model = glm::translate(model, cubePositions[i]);
+        float angle = 20.f * i;
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        m_shader->setUniform("model", model);
+
+        glBindVertexArray(m_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    //light
+    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+    m_lightShader->use();
+    m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
+
+    glm::mat4 model = glm::mat4(1.0);
+    model = glm::translate(model, m_lightPos);
+    model = glm::scale(model, glm::vec3(0.2f));
+
+    m_lightShader->setUniform("model", model);
+    m_lightShader->setUniform("view", view);
+    m_lightShader->setUniform("projection", projection);
+
+    glBindVertexArray(m_lightVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }

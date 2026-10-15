@@ -19,6 +19,8 @@ public:
     virtual void render() override;
 
     void prepareTexture();
+    void renderDirection();
+    void renderPoint();
 
 protected:
     std::unique_ptr<ShaderProgram> m_lightShader;

@@ -119,7 +119,11 @@ set(SOURCE_FILES
     shader/LightSection/texture.vert
 )
 
-add_executable(OpenGLDemo ${SOURCE_FILES})
+add_executable(OpenGLDemo ${SOURCE_FILES}
+    shader/LightSection/lightDirection.frag
+    shader/LightSection/lightDirection.vert
+    shader/LightSection/lightPoint.frag
+    shader/LightSection/lightPoint.vert)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 
