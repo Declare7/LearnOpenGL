@@ -21,6 +21,7 @@ public:
     void prepareTexture();
     void renderDirection();
     void renderPoint();
+    void renderLightFlash();
 
 protected:
     std::unique_ptr<ShaderProgram> m_lightShader;

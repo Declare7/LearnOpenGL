@@ -133,6 +133,7 @@ void showMenu()
     cout<< "22. Light Texture"<< endl;
     cout<< "23. Light Direction"<< endl;
     cout<< "24. Light Point"<< endl;
+    cout<< "25. Light Flash"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -214,6 +215,9 @@ SectionBase* createSection(int choice)
         break;
     case 24:
         section = new LightSection("lightPoint");
+        break;
+    case 25:
+        section = new LightSection("lightFlash");
         break;
 
     default:

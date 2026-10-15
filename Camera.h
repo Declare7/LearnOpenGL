@@ -28,6 +28,8 @@ public:
 
     glm::vec3 getPosition() const;
 
+    glm::vec3 getFront() const;
+
     void setMovementSpeed(float speed);
 
     void setScrolledSensitivity(float sensitivity);

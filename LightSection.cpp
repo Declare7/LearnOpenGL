@@ -6,6 +6,19 @@
 #include "Camera.h"
 #include "3rd/stb/stb_image.h"
 
+glm::vec3 cubePositions[] = {
+    glm::vec3( 0.0f,  0.0f,  0.0f),
+    glm::vec3( 2.0f,  5.0f, -15.0f),
+    glm::vec3(-1.5f, -2.2f, -2.5f),
+    glm::vec3(-3.8f, -2.0f, -12.3f),
+    glm::vec3( 2.4f, -0.4f, -3.5f),
+    glm::vec3(-1.7f,  3.0f, -7.5f),
+    glm::vec3( 1.3f, -2.0f, -2.5f),
+    glm::vec3( 1.5f,  2.0f, -2.5f),
+    glm::vec3( 1.5f,  0.2f, -1.5f),
+    glm::vec3(-1.3f,  1.0f, -1.5f)
+};
+
 LightSection::LightSection(const std::string &type, bool supportInput) : SectionBase(type, supportInput)
 {
     m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -65,98 +78,99 @@ void LightSection::prepare()
     m_lightShader->use();
     m_lightShader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
 
-    if(m_type == "texture" || m_type == "lightDirection" || m_type == "lightPoint")
+    if(m_type == "texture" || m_type == "lightDirection" || m_type == "lightPoint" || m_type == "lightFlash")
     {
         prepareTexture();
-        return;
-    }
-
-    glGenVertexArrays(1, &m_VAO);
-    glBindVertexArray(m_VAO);
-
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-        0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-    };
-
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(sizeof(float) * 3));
-    glEnableVertexAttribArray(1);
-
-    //light
-    glGenVertexArrays(1, &m_lightVAO);
-    glBindVertexArray(m_lightVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    m_shader->use();
-    if(m_type == "material" || m_type == "lightChanged")
-    {
-        m_shader->setUniform("material.ambient", 0.135f, 0.2225f, 0.1575f);
-        m_shader->setUniform("material.diffuse", 0.54f, 0.89f, 0.63f);
-        m_shader->setUniform("material.specular", 0.316228f, 0.316228f, 0.316228f);
-        m_shader->setUniform("material.shininess", 25.6f);
-
-        m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
-        m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
-        m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
-        m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
     }
     else
     {
-        m_shader->setUniform("lightPos", m_lightPos.x, m_lightPos.y, m_lightPos.z);
-        m_shader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
-        m_shader->setUniform("objectColor", 1.0f, 0.5f, 0.31f);
+        glGenVertexArrays(1, &m_VAO);
+        glBindVertexArray(m_VAO);
+
+        float vertices[] = {
+            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+        };
+
+        unsigned int VBO;
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(sizeof(float) * 3));
+        glEnableVertexAttribArray(1);
+
+        //light
+        glGenVertexArrays(1, &m_lightVAO);
+        glBindVertexArray(m_lightVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        m_shader->use();
+        if(m_type == "material" || m_type == "lightChanged")
+        {
+            m_shader->setUniform("material.ambient", 0.135f, 0.2225f, 0.1575f);
+            m_shader->setUniform("material.diffuse", 0.54f, 0.89f, 0.63f);
+            m_shader->setUniform("material.specular", 0.316228f, 0.316228f, 0.316228f);
+            m_shader->setUniform("material.shininess", 25.6f);
+
+            m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
+            m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
+            m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
+            m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+        }
+        else
+        {
+            m_shader->setUniform("lightPos", m_lightPos.x, m_lightPos.y, m_lightPos.z);
+            m_shader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
+            m_shader->setUniform("objectColor", 1.0f, 0.5f, 0.31f);
+        }
     }
 }
 
@@ -182,45 +196,50 @@ void LightSection::render()
         m_shader->setUniform("light.ambient", ambientColor.x, ambientColor.y, ambientColor.z);
         m_shader->setUniform("light.diffuse", diffuseColor.x, diffuseColor.y, diffuseColor.z);
     }
-    else if(m_type == "lightDirection")
+
+    if(m_type == "lightDirection")
     {
         renderDirection();
-        return;
     }
     else if(m_type == "lightPoint")
     {
         renderPoint();
-        return;
     }
+    else if(m_type == "lightFlash")
+    {
+        renderLightFlash();
+    }
+    else
+    {
+        glm::mat4 model = glm::mat4(1.0);
+        m_shader->setUniform("model", model);
 
-    glm::mat4 model = glm::mat4(1.0);
-    m_shader->setUniform("model", model);
+        glm::mat4 view = glm::mat4(1.0);
+        view = m_camera->getViewMetrix();
+        m_shader->setUniform("view", view);
 
-    glm::mat4 view = glm::mat4(1.0);
-    view = m_camera->getViewMetrix();
-    m_shader->setUniform("view", view);
+        glm::mat4 projection = glm::mat4(1.0);
+        projection = glm::perspective(glm::radians(m_camera->getZoom()), 800.0f/600, 0.1f, 100.0f);
+        m_shader->setUniform("projection", projection);
 
-    glm::mat4 projection = glm::mat4(1.0);
-    projection = glm::perspective(glm::radians(m_camera->getZoom()), 800.0f/600, 0.1f, 100.0f);
-    m_shader->setUniform("projection", projection);
+        glBindVertexArray(m_VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+        //light
+        m_lightShader->use();
+        m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
 
-    //light
-    m_lightShader->use();
-    m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
+        model = glm::mat4(1.0);
+        model = glm::translate(model, m_lightPos);
+        model = glm::scale(model, glm::vec3(0.2f));
 
-    model = glm::mat4(1.0);
-    model = glm::translate(model, m_lightPos);
-    model = glm::scale(model, glm::vec3(0.2f));
+        m_lightShader->setUniform("model", model);
+        m_lightShader->setUniform("view", view);
+        m_lightShader->setUniform("projection", projection);
 
-    m_lightShader->setUniform("model", model);
-    m_lightShader->setUniform("view", view);
-    m_lightShader->setUniform("projection", projection);
-
-    glBindVertexArray(m_lightVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(m_lightVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 }
 
 void LightSection::prepareTexture()
@@ -355,7 +374,7 @@ void LightSection::prepareTexture()
     {
         m_shader->setUniform("light.direction", -0.2f, -1.0f, -0.3f);
     }
-    else if(m_type == "lightPoint")
+    else if(m_type == "lightPoint" || m_type == "lightFlash")
     {
         m_shader->setUniform("light.constant", 1.0f);
         m_shader->setUniform("light.linear", 0.09f);
@@ -369,19 +388,6 @@ void LightSection::prepareTexture()
 
 void LightSection::renderDirection()
 {
-    glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f),
-        glm::vec3( 2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3( 2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3( 1.3f, -2.0f, -2.5f),
-        glm::vec3( 1.5f,  2.0f, -2.5f),
-        glm::vec3( 1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
-
     glm::mat4 view = glm::mat4(1.0);
     view = m_camera->getViewMetrix();
     m_shader->setUniform("view", view);
@@ -405,19 +411,6 @@ void LightSection::renderDirection()
 
 void LightSection::renderPoint()
 {
-    glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f),
-        glm::vec3( 2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3( 2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3( 1.3f, -2.0f, -2.5f),
-        glm::vec3( 1.5f,  2.0f, -2.5f),
-        glm::vec3( 1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
-
     glm::mat4 view = glm::mat4(1.0);
     view = m_camera->getViewMetrix();
     m_shader->setUniform("view", view);
@@ -453,4 +446,13 @@ void LightSection::renderPoint()
 
     glBindVertexArray(m_lightVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void LightSection::renderLightFlash()
+{
+    m_shader->setUniform("light.position", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
+    m_shader->setUniform("light.direction", -m_camera->getFront().x, -m_camera->getFront().y, -m_camera->getFront().z);
+    m_shader->setUniform("light.cutOffCos", glm::cos(glm::radians(8.5f)));
+    m_shader->setUniform("light.outerCutOffCos", glm::cos(glm::radians(12.5f)));
+    renderDirection();
 }

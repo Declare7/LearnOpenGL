@@ -117,13 +117,15 @@ set(SOURCE_FILES
     shader/LightSection/material.vert
     shader/LightSection/texture.frag
     shader/LightSection/texture.vert
-)
-
-add_executable(OpenGLDemo ${SOURCE_FILES}
     shader/LightSection/lightDirection.frag
     shader/LightSection/lightDirection.vert
     shader/LightSection/lightPoint.frag
-    shader/LightSection/lightPoint.vert)
+    shader/LightSection/lightPoint.vert
+    shader/LightSection/lightFlash.frag
+    shader/LightSection/lightFlash.vert
+)
+
+add_executable(OpenGLDemo ${SOURCE_FILES})
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 
