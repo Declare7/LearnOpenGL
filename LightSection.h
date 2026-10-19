@@ -22,6 +22,7 @@ public:
     void renderDirection();
     void renderPoint();
     void renderLightFlash();
+    void renderMultiLight();
 
 protected:
     std::unique_ptr<ShaderProgram> m_lightShader;

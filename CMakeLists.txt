@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(LearnOpenGL LANGUAGES CXX C)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(GNUInstallDirs)
@@ -125,7 +125,9 @@ set(SOURCE_FILES
     shader/LightSection/lightFlash.vert
 )
 
-add_executable(OpenGLDemo ${SOURCE_FILES})
+add_executable(OpenGLDemo ${SOURCE_FILES}
+    shader/LightSection/multiLight.frag
+    shader/LightSection/multiLight.vert)
 
 target_link_libraries(OpenGLDemo PRIVATE glfw)
 

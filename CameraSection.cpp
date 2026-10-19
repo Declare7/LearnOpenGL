@@ -123,7 +123,7 @@ void CameraSection::processMouse(double msX, double msY)
     yOffset *= sensitivity;
 
     m_yaw += xOffset;
-    m_pitch += yOffset;
+    m_pitch -= yOffset;
     if(m_pitch> 89.0f)
         m_pitch = 89.0f;
     else if(m_pitch< -89.0f)

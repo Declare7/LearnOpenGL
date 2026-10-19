@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
 #include "3rd/stb/stb_image.h"
+#include <format>
 
 glm::vec3 cubePositions[] = {
     glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -17,6 +18,13 @@ glm::vec3 cubePositions[] = {
     glm::vec3( 1.5f,  2.0f, -2.5f),
     glm::vec3( 1.5f,  0.2f, -1.5f),
     glm::vec3(-1.3f,  1.0f, -1.5f)
+};
+
+glm::vec3 pointLightPositions[] = {
+    glm::vec3( 0.7f,  0.2f,  2.0f),
+    glm::vec3( 2.3f, -3.3f, -4.0f),
+    glm::vec3(-4.0f,  2.0f, -12.0f),
+    glm::vec3( 0.0f,  0.0f, -3.0f)
 };
 
 LightSection::LightSection(const std::string &type, bool supportInput) : SectionBase(type, supportInput)
@@ -54,7 +62,7 @@ void LightSection::processMouse(double msX, double msY)
     m_lastMouseX = msX;
     m_lastMouseY = msY;
 
-    m_camera->onScrolled(xOffset, yOffset);
+    m_camera->onScrolled(xOffset, -yOffset);
 }
 
 void LightSection::processWheel(double xOffset, double yOffset)
@@ -78,7 +86,7 @@ void LightSection::prepare()
     m_lightShader->use();
     m_lightShader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
 
-    if(m_type == "texture" || m_type == "lightDirection" || m_type == "lightPoint" || m_type == "lightFlash")
+    if(m_type == "texture" || m_type == "lightDirection" || m_type == "lightPoint" || m_type == "lightFlash" || m_type == "multiLight")
     {
         prepareTexture();
     }
@@ -208,6 +216,10 @@ void LightSection::render()
     else if(m_type == "lightFlash")
     {
         renderLightFlash();
+    }
+    else if(m_type == "multiLight")
+    {
+        renderMultiLight();
     }
     else
     {
@@ -366,23 +378,57 @@ void LightSection::prepareTexture()
     m_shader->setUniform("material.specular", 1);
     m_shader->setUniform("material.shininess", 32.0f);
 
-    m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
-    m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
-    m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
+    if(m_type == "multiLight")
+    {
+        m_shader->setUniform("dirLight.direction", -0.2f, -1.0f, -0.3f);
+        m_shader->setUniform("dirLight.ambient", 0.2f, 0.2f, 0.2f);
+        m_shader->setUniform("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
+        m_shader->setUniform("dirLight.specular", 1.0f, 1.0f, 1.0f);
 
-    if(m_type == "lightDirection")
-    {
-        m_shader->setUniform("light.direction", -0.2f, -1.0f, -0.3f);
-    }
-    else if(m_type == "lightPoint" || m_type == "lightFlash")
-    {
-        m_shader->setUniform("light.constant", 1.0f);
-        m_shader->setUniform("light.linear", 0.09f);
-        m_shader->setUniform("light.quadratic", 0.032f);
+        for(int i= 0; i< 4; ++i)
+        {
+            m_shader->setUniform(std::format("pointLights[{}].position", i), pointLightPositions[i].x, pointLightPositions[i].y, pointLightPositions[i].z);
+
+            m_shader->setUniform(std::format("pointLights[{}].constant", i), 1.0f);
+            m_shader->setUniform(std::format("pointLights[{}].linear", i), 0.09f);
+            m_shader->setUniform(std::format("pointLights[{}].quadratic", i), 0.032f);
+
+            m_shader->setUniform(std::format("pointLights[{}].ambient", i), 0.2f, 0.2f, 0.2f);
+            m_shader->setUniform(std::format("pointLights[{}].diffuse", i), 0.5f, 0.5f, 0.5f);
+            m_shader->setUniform(std::format("pointLights[{}].specular", i), 1.0f, 1.0f, 1.0f);
+        }
+
+        m_shader->setUniform("spotLight.cutOffCos", glm::cos(glm::radians(8.5f)));
+        m_shader->setUniform("spotLight.outerCutOffCos", glm::cos(glm::radians(12.5f)));
+
+        m_shader->setUniform("spotLight.ambient", 0.2f, 0.2f, 0.2f);
+        m_shader->setUniform("spotLight.diffuse", 0.5f, 0.5f, 0.5f);
+        m_shader->setUniform("spotLight.specular", 1.0f, 1.0f, 1.0f);
+
+        m_shader->setUniform("spotLight.constant", 1.0f);
+        m_shader->setUniform("spotLight.linear", 0.09f);
+        m_shader->setUniform("spotLight.quadratic", 0.032f);
     }
     else
     {
-        m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+        m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
+        m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
+        m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
+
+        if(m_type == "lightDirection")
+        {
+            m_shader->setUniform("light.direction", -0.2f, -1.0f, -0.3f);
+        }
+        else if(m_type == "lightPoint" || m_type == "lightFlash")
+        {
+            m_shader->setUniform("light.constant", 1.0f);
+            m_shader->setUniform("light.linear", 0.09f);
+            m_shader->setUniform("light.quadratic", 0.032f);
+        }
+        else
+        {
+            m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+        }
     }
 }
 
@@ -455,4 +501,36 @@ void LightSection::renderLightFlash()
     m_shader->setUniform("light.cutOffCos", glm::cos(glm::radians(8.5f)));
     m_shader->setUniform("light.outerCutOffCos", glm::cos(glm::radians(12.5f)));
     renderDirection();
+}
+
+void LightSection::renderMultiLight()
+{
+    m_shader->setUniform("spotLight.position", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
+    m_shader->setUniform("spotLight.direction", -m_camera->getFront().x, -m_camera->getFront().y, -m_camera->getFront().z);
+
+    renderDirection();
+
+    //light
+    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+    m_lightShader->use();
+    m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
+
+    glm::mat4 view = glm::mat4(1.0);
+    view = m_camera->getViewMetrix();
+    m_lightShader->setUniform("view", view);
+
+    glm::mat4 projection = glm::mat4(1.0);
+    projection = glm::perspective(glm::radians(m_camera->getZoom()), 800.0f/600, 0.1f, 100.0f);
+    m_lightShader->setUniform("projection", projection);
+
+    glBindVertexArray(m_lightVAO);
+
+    for(int i= 0; i< 4; ++i)
+    {
+        glm::mat4 model = glm::mat4(1.0);
+        model = glm::translate(model, pointLightPositions[i]);
+        model = glm::scale(model, glm::vec3(0.2f));
+        m_lightShader->setUniform("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 }
