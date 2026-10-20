@@ -123,15 +123,24 @@ set(SOURCE_FILES
     shader/LightSection/lightPoint.vert
     shader/LightSection/lightFlash.frag
     shader/LightSection/lightFlash.vert
+    shader/LightSection/multiLight.frag
+    shader/LightSection/multiLight.vert
 )
 
-add_executable(OpenGLDemo ${SOURCE_FILES}
-    shader/LightSection/multiLight.frag
-    shader/LightSection/multiLight.vert)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(OpenGLDemo PRIVATE glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 
-target_include_directories(OpenGLDemo PRIVATE 3rd/glad/include)
-target_include_directories(OpenGLDemo PRIVATE 3rd/stb)
+target_include_directories(${PROJECT_NAME} PRIVATE 3rd/glad/include)
+target_include_directories(${PROJECT_NAME} PRIVATE 3rd/stb)
 
-target_compile_definitions(OpenGLDemo PRIVATE SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_definitions(${PROJECT_NAME} PRIVATE SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
+
+######## assimp lib ############
+add_library(assimp_external SHARED IMPORTED)
+set_target_properties(assimp_external PROPERTIES IMPORTED_LOCATION ${CMAKE_PREFIX_PATH}/lib/libassimp.dylib)
+target_include_directories(assimp_external INTERFACE ${CMAKE_PREFIX_PATH}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE assimp_external)
+
+################################
+

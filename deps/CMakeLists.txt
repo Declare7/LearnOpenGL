@@ -8,3 +8,4 @@ set(DESTDIR ${CMAKE_PREFIX_PATH})
 
 include(GLFW/GLFW.cmake)
 include(GLM/GLM.cmake)
+include(Assimp/Assimp.cmake)
