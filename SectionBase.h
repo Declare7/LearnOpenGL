@@ -22,7 +22,7 @@ public:
     virtual void processWheel(double xOffset, double yOffset){};
 
 protected:
-    std::unique_ptr<ShaderProgram> loadShader(const std::string &type="normal");
+    std::unique_ptr<lngl::ShaderProgram> loadShader(const std::string &type="normal");
 
 private:
     std::string getClassName();
@@ -30,7 +30,7 @@ private:
 protected:
     std::string m_type{""};
     unsigned int m_VAO{0};
-    std::unique_ptr<ShaderProgram> m_shader;
+    std::unique_ptr<lngl::ShaderProgram> m_shader;
     bool m_supportInput{false};
 };
 

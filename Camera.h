@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 
+namespace lngl {
+
 class Camera
 {
 public:
@@ -57,5 +59,7 @@ private:
     float m_movementSpeed{2.5f};
     float m_scrolledSensitivity{0.05f};
 };
+
+}//end namespace lngl
 
 #endif // CAMERA_H

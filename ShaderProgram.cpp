@@ -4,47 +4,47 @@
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
 
-ShaderProgram::ShaderProgram(const std::string &path, const std::string &name)
+lngl::ShaderProgram::ShaderProgram(const std::string &path, const std::string &name)
 {
     initialize(path, name);
 }
 
-void ShaderProgram::use()
+void lngl::ShaderProgram::use()
 {
     glUseProgram(m_shaderProgram);
 }
 
-void ShaderProgram::setUniform(const std::string &name, int value)
+void lngl::ShaderProgram::setUniform(const std::string &name, int value)
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniform1i(location, value);
 }
 
-void ShaderProgram::setUniform(const std::string &name, float value)
+void lngl::ShaderProgram::setUniform(const std::string &name, float value)
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniform1f(location, value);
 }
 
-void ShaderProgram::setUniform(const std::string &name, const glm::mat4 &value)
+void lngl::ShaderProgram::setUniform(const std::string &name, const glm::mat4 &value)
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void ShaderProgram::setUniform(const std::string &name, float v1, float v2, float v3)
+void lngl::ShaderProgram::setUniform(const std::string &name, float v1, float v2, float v3)
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniform3f(location, v1, v2, v3);
 }
 
-void ShaderProgram::setUniform(const std::string &name, float v1, float v2, float v3, float v4)
+void lngl::ShaderProgram::setUniform(const std::string &name, float v1, float v2, float v3, float v4)
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniform4f(location, v1, v2, v3, v4);
 }
 
-void ShaderProgram::initialize(const std::string &path, const std::string &name)
+void lngl::ShaderProgram::initialize(const std::string &path, const std::string &name)
 {
     // build and compile our shader program
     // ------------------------------------
@@ -91,7 +91,7 @@ void ShaderProgram::initialize(const std::string &path, const std::string &name)
     glDeleteShader(fragmentShader);
 }
 
-std::string ShaderProgram::readShader(const std::string &name, const std::string &suffix)
+std::string lngl::ShaderProgram::readShader(const std::string &name, const std::string &suffix)
 {
     std::string path = name + suffix;
     std::fstream fs(path, std::ios::in | std::ios::binary | std::ios::ate);

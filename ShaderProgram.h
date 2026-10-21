@@ -4,6 +4,8 @@
 #include <string>
 #include <glm/glm.hpp>
 
+namespace lngl {
+
 class ShaderProgram
 {
 public:
@@ -28,5 +30,7 @@ private:
 private:
     unsigned int m_shaderProgram{0};
 };
+
+}//end namespace lngl
 
 #endif // SHADERPROGRAM_H

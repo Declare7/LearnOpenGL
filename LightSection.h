@@ -3,7 +3,9 @@
 
 #include "SectionBase.h"
 
+namespace lngl {
 class Camera;
+}
 
 class LightSection : public SectionBase
 {
@@ -25,8 +27,8 @@ public:
     void renderMultiLight();
 
 protected:
-    std::unique_ptr<ShaderProgram> m_lightShader;
-    std::unique_ptr<Camera> m_camera;
+    std::unique_ptr<lngl::ShaderProgram> m_lightShader;
+    std::unique_ptr<lngl::Camera> m_camera;
     unsigned int m_lightVAO{0};
     double m_lastMouseX{400.0};
     double m_lastMouseY{300.0};

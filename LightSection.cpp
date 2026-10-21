@@ -29,7 +29,7 @@ glm::vec3 pointLightPositions[] = {
 
 LightSection::LightSection(const std::string &type, bool supportInput) : SectionBase(type, supportInput)
 {
-    m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
+    m_camera = std::make_unique<lngl::Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
 }
 
 void LightSection::processInput(GLFWwindow *window)
@@ -39,19 +39,19 @@ void LightSection::processInput(GLFWwindow *window)
 
     if(glfwGetKey(window, GLFW_KEY_W))
     {
-        m_camera->onMoved(Camera::MOVE_FORWARD, deltaTime);
+        m_camera->onMoved(lngl::Camera::MOVE_FORWARD, deltaTime);
     }
     if(glfwGetKey(window, GLFW_KEY_S))
     {
-        m_camera->onMoved(Camera::MOVE_BACKWARD, deltaTime);
+        m_camera->onMoved(lngl::Camera::MOVE_BACKWARD, deltaTime);
     }
     if(glfwGetKey(window, GLFW_KEY_A))
     {
-        m_camera->onMoved(Camera::MOVE_LEFT, deltaTime);
+        m_camera->onMoved(lngl::Camera::MOVE_LEFT, deltaTime);
     }
     if(glfwGetKey(window, GLFW_KEY_D))
     {
-        m_camera->onMoved(Camera::MOVE_RIGHT, deltaTime);
+        m_camera->onMoved(lngl::Camera::MOVE_RIGHT, deltaTime);
     }
 }
 

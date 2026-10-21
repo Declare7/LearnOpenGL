@@ -2,7 +2,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <iostream>
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 front, float yaw, float pitch, float zoom)
+lngl::Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 front, float yaw, float pitch, float zoom)
     : m_position(position),
     m_worldUp(up),
     m_front(front),
@@ -13,37 +13,37 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 front, float yaw, flo
     update();
 }
 
-float Camera::getZoom() const
+float lngl::Camera::getZoom() const
 {
     return m_zoom;
 }
 
-glm::mat4 Camera::getViewMetrix() const
+glm::mat4 lngl::Camera::getViewMetrix() const
 {
     return glm::lookAt(m_position, m_position + m_front, m_up);
 }
 
-glm::vec3 Camera::getPosition() const
+glm::vec3 lngl::Camera::getPosition() const
 {
     return m_position;
 }
 
-glm::vec3 Camera::getFront() const
+glm::vec3 lngl::Camera::getFront() const
 {
     return m_front;
 }
 
-void Camera::setMovementSpeed(float speed)
+void lngl::Camera::setMovementSpeed(float speed)
 {
     m_movementSpeed = speed;
 }
 
-void Camera::setScrolledSensitivity(float sensitivity)
+void lngl::Camera::setScrolledSensitivity(float sensitivity)
 {
     m_scrolledSensitivity = sensitivity;
 }
 
-void Camera::onMoved(MoveDirection direct, float delta)
+void lngl::Camera::onMoved(MoveDirection direct, float delta)
 {
     float moveFactor = m_movementSpeed * delta;
     switch(direct)
@@ -69,7 +69,7 @@ void Camera::onMoved(MoveDirection direct, float delta)
     }
 }
 
-void Camera::onScrolled(float xOffset, float yOffset)
+void lngl::Camera::onScrolled(float xOffset, float yOffset)
 {
     xOffset *= m_scrolledSensitivity;
     yOffset *= m_scrolledSensitivity;
@@ -85,7 +85,7 @@ void Camera::onScrolled(float xOffset, float yOffset)
     update();
 }
 
-void Camera::onZoomed(float offset)
+void lngl::Camera::onZoomed(float offset)
 {
     m_zoom -= offset;
     if(m_zoom < 1.0f)
@@ -94,7 +94,7 @@ void Camera::onZoomed(float offset)
         m_zoom = 45.0f;
 }
 
-void Camera::update()
+void lngl::Camera::update()
 {
     glm::vec3 front;
     front.x = cos(glm::radians(m_pitch)) * cos(glm::radians(m_yaw));
