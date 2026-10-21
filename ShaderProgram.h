@@ -13,15 +13,17 @@ public:
 
     void use();
 
-    void setUniform(const std::string &name, int value);
+    void setUniform(const std::string &name, unsigned int value) const;
 
-    void setUniform(const std::string &name, float value);
+    void setUniform(const std::string &name, int value) const;
 
-    void setUniform(const std::string &name, const glm::mat4 &value);
+    void setUniform(const std::string &name, float value) const;
 
-    void setUniform(const std::string &name, float v1, float v2, float v3);
+    void setUniform(const std::string &name, const glm::mat4 &value) const;
 
-    void setUniform(const std::string &name, float v1, float v2, float v3, float v4);
+    void setUniform(const std::string &name, const glm::vec3 &value) const;
+
+    void setUniform(const std::string &name, const glm::vec4 &value) const;
 
 private:
     void initialize(const std::string &path, const std::string &name);

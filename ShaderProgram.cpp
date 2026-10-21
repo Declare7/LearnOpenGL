@@ -14,34 +14,40 @@ void lngl::ShaderProgram::use()
     glUseProgram(m_shaderProgram);
 }
 
-void lngl::ShaderProgram::setUniform(const std::string &name, int value)
+void lngl::ShaderProgram::setUniform(const std::string &name, unsigned int value) const
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniform1i(location, value);
 }
 
-void lngl::ShaderProgram::setUniform(const std::string &name, float value)
+void lngl::ShaderProgram::setUniform(const std::string &name, int value) const
+{
+    auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
+    glUniform1i(location, value);
+}
+
+void lngl::ShaderProgram::setUniform(const std::string &name, float value) const
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniform1f(location, value);
 }
 
-void lngl::ShaderProgram::setUniform(const std::string &name, const glm::mat4 &value)
+void lngl::ShaderProgram::setUniform(const std::string &name, const glm::mat4 &value) const
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void lngl::ShaderProgram::setUniform(const std::string &name, float v1, float v2, float v3)
+void lngl::ShaderProgram::setUniform(const std::string &name, const glm::vec3 &value) const
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
-    glUniform3f(location, v1, v2, v3);
+    glUniform3f(location, value.x, value.y, value.z);
 }
 
-void lngl::ShaderProgram::setUniform(const std::string &name, float v1, float v2, float v3, float v4)
+void lngl::ShaderProgram::setUniform(const std::string &name, const glm::vec4 &value) const
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
-    glUniform4f(location, v1, v2, v3, v4);
+    glUniform4f(location, value.x, value.y, value.z, value.w);
 }
 
 void lngl::ShaderProgram::initialize(const std::string &path, const std::string &name)

@@ -71,6 +71,8 @@ set(SOURCE_FILES
 
     LightSection.h LightSection.cpp
     Camera.h Camera.cpp
+    Mesh.h Mesh.cpp
+    DataDefine.h
     learnopengl/shader_m.h
     learnopengl/camera.h
 

@@ -94,7 +94,7 @@ void TriangleSection::renderUniform()
 
     float timeVal = glfwGetTime();
     float greenVal = sin(timeVal)/ 2.0f + 0.5f;
-    m_shader->setUniform("uniColor", 0.0f, greenVal, 0.0f, 1.0f);
+    m_shader->setUniform("uniColor", glm::vec4(0.0f, greenVal, 0.0f, 1.0f));
 
     // glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -172,5 +172,5 @@ void TriangleSection::prepareDoubleProgram()
 void TriangleSection::prepareUniformCustom()
 {
     m_shader->use();
-    m_shader->setUniform("moveRight", 0.5, 0.0, 0.0);
+    m_shader->setUniform("moveRight", glm::vec3(0.5, 0.0, 0.0));
 }

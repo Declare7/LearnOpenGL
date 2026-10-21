@@ -84,7 +84,7 @@ void LightSection::prepare()
 
     m_lightShader = loadShader("lightSource");
     m_lightShader->use();
-    m_lightShader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
+    m_lightShader->setUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
     if(m_type == "texture" || m_type == "lightDirection" || m_type == "lightPoint" || m_type == "lightFlash" || m_type == "multiLight")
     {
@@ -163,21 +163,21 @@ void LightSection::prepare()
         m_shader->use();
         if(m_type == "material" || m_type == "lightChanged")
         {
-            m_shader->setUniform("material.ambient", 0.135f, 0.2225f, 0.1575f);
-            m_shader->setUniform("material.diffuse", 0.54f, 0.89f, 0.63f);
-            m_shader->setUniform("material.specular", 0.316228f, 0.316228f, 0.316228f);
+            m_shader->setUniform("material.ambient", glm::vec3(0.135f, 0.2225f, 0.1575f));
+            m_shader->setUniform("material.diffuse", glm::vec3(0.54f, 0.89f, 0.63f));
+            m_shader->setUniform("material.specular", glm::vec3(0.316228f, 0.316228f, 0.316228f));
             m_shader->setUniform("material.shininess", 25.6f);
 
-            m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
-            m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
-            m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
-            m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+            m_shader->setUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+            m_shader->setUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+            m_shader->setUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+            m_shader->setUniform("light.position", glm::vec3(1.2f, 0.5f, 2.0f));
         }
         else
         {
-            m_shader->setUniform("lightPos", m_lightPos.x, m_lightPos.y, m_lightPos.z);
-            m_shader->setUniform("lightColor", 1.0f, 1.0f, 1.0f);
-            m_shader->setUniform("objectColor", 1.0f, 0.5f, 0.31f);
+            m_shader->setUniform("lightPos", m_lightPos);
+            m_shader->setUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+            m_shader->setUniform("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
         }
     }
 }
@@ -189,7 +189,7 @@ void LightSection::render()
     glEnable(GL_MULTISAMPLE);
 
     m_shader->use();
-    m_shader->setUniform("viewPos", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
+    m_shader->setUniform("viewPos", m_camera->getPosition());
     glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
     if(m_type == "lightChanged")
@@ -201,8 +201,8 @@ void LightSection::render()
         glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
         glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
-        m_shader->setUniform("light.ambient", ambientColor.x, ambientColor.y, ambientColor.z);
-        m_shader->setUniform("light.diffuse", diffuseColor.x, diffuseColor.y, diffuseColor.z);
+        m_shader->setUniform("light.ambient", ambientColor);
+        m_shader->setUniform("light.diffuse", diffuseColor);
     }
 
     if(m_type == "lightDirection")
@@ -239,7 +239,7 @@ void LightSection::render()
 
         //light
         m_lightShader->use();
-        m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
+        m_lightShader->setUniform("lightColor", lightColor);
 
         model = glm::mat4(1.0);
         model = glm::translate(model, m_lightPos);
@@ -380,30 +380,30 @@ void LightSection::prepareTexture()
 
     if(m_type == "multiLight")
     {
-        m_shader->setUniform("dirLight.direction", -0.2f, -1.0f, -0.3f);
-        m_shader->setUniform("dirLight.ambient", 0.2f, 0.2f, 0.2f);
-        m_shader->setUniform("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
-        m_shader->setUniform("dirLight.specular", 1.0f, 1.0f, 1.0f);
+        m_shader->setUniform("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+        m_shader->setUniform("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+        m_shader->setUniform("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+        m_shader->setUniform("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
         for(int i= 0; i< 4; ++i)
         {
-            m_shader->setUniform(std::format("pointLights[{}].position", i), pointLightPositions[i].x, pointLightPositions[i].y, pointLightPositions[i].z);
+            m_shader->setUniform(std::format("pointLights[{}].position", i), pointLightPositions[i]);
 
             m_shader->setUniform(std::format("pointLights[{}].constant", i), 1.0f);
             m_shader->setUniform(std::format("pointLights[{}].linear", i), 0.09f);
             m_shader->setUniform(std::format("pointLights[{}].quadratic", i), 0.032f);
 
-            m_shader->setUniform(std::format("pointLights[{}].ambient", i), 0.2f, 0.2f, 0.2f);
-            m_shader->setUniform(std::format("pointLights[{}].diffuse", i), 0.5f, 0.5f, 0.5f);
-            m_shader->setUniform(std::format("pointLights[{}].specular", i), 1.0f, 1.0f, 1.0f);
+            m_shader->setUniform(std::format("pointLights[{}].ambient", i), glm::vec3(0.2f, 0.2f, 0.2f));
+            m_shader->setUniform(std::format("pointLights[{}].diffuse", i), glm::vec3(0.5f, 0.5f, 0.5f));
+            m_shader->setUniform(std::format("pointLights[{}].specular", i), glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
         m_shader->setUniform("spotLight.cutOffCos", glm::cos(glm::radians(8.5f)));
         m_shader->setUniform("spotLight.outerCutOffCos", glm::cos(glm::radians(12.5f)));
 
-        m_shader->setUniform("spotLight.ambient", 0.2f, 0.2f, 0.2f);
-        m_shader->setUniform("spotLight.diffuse", 0.5f, 0.5f, 0.5f);
-        m_shader->setUniform("spotLight.specular", 1.0f, 1.0f, 1.0f);
+        m_shader->setUniform("spotLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+        m_shader->setUniform("spotLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+        m_shader->setUniform("spotLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
         m_shader->setUniform("spotLight.constant", 1.0f);
         m_shader->setUniform("spotLight.linear", 0.09f);
@@ -411,13 +411,13 @@ void LightSection::prepareTexture()
     }
     else
     {
-        m_shader->setUniform("light.ambient", 0.2f, 0.2f, 0.2f);
-        m_shader->setUniform("light.diffuse", 0.5f, 0.5f, 0.5f);
-        m_shader->setUniform("light.specular", 1.0f, 1.0f, 1.0f);
+        m_shader->setUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+        m_shader->setUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+        m_shader->setUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
         if(m_type == "lightDirection")
         {
-            m_shader->setUniform("light.direction", -0.2f, -1.0f, -0.3f);
+            m_shader->setUniform("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
         }
         else if(m_type == "lightPoint" || m_type == "lightFlash")
         {
@@ -427,7 +427,7 @@ void LightSection::prepareTexture()
         }
         else
         {
-            m_shader->setUniform("light.position", 1.2f, 0.5f, 2.0f);
+            m_shader->setUniform("light.position", glm::vec3(1.2f, 0.5f, 2.0f));
         }
     }
 }
@@ -480,7 +480,7 @@ void LightSection::renderPoint()
     //light
     glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
     m_lightShader->use();
-    m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
+    m_lightShader->setUniform("lightColor", lightColor);
 
     glm::mat4 model = glm::mat4(1.0);
     model = glm::translate(model, m_lightPos);
@@ -496,8 +496,8 @@ void LightSection::renderPoint()
 
 void LightSection::renderLightFlash()
 {
-    m_shader->setUniform("light.position", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
-    m_shader->setUniform("light.direction", -m_camera->getFront().x, -m_camera->getFront().y, -m_camera->getFront().z);
+    m_shader->setUniform("light.position", m_camera->getPosition());
+    m_shader->setUniform("light.direction", -m_camera->getFront());
     m_shader->setUniform("light.cutOffCos", glm::cos(glm::radians(8.5f)));
     m_shader->setUniform("light.outerCutOffCos", glm::cos(glm::radians(12.5f)));
     renderDirection();
@@ -505,15 +505,15 @@ void LightSection::renderLightFlash()
 
 void LightSection::renderMultiLight()
 {
-    m_shader->setUniform("spotLight.position", m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z);
-    m_shader->setUniform("spotLight.direction", -m_camera->getFront().x, -m_camera->getFront().y, -m_camera->getFront().z);
+    m_shader->setUniform("spotLight.position", m_camera->getPosition());
+    m_shader->setUniform("spotLight.direction", -m_camera->getFront());
 
     renderDirection();
 
     //light
     glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
     m_lightShader->use();
-    m_lightShader->setUniform("lightColor", lightColor.x, lightColor.y, lightColor.z);
+    m_lightShader->setUniform("lightColor", lightColor);
 
     glm::mat4 view = glm::mat4(1.0);
     view = m_camera->getViewMetrix();
