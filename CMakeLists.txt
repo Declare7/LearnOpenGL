@@ -48,6 +48,7 @@ execute_process(
 )
 
 find_package(glfw3 REQUIRED)
+find_package(glm REQUIRED)
 
 set(SOURCE_FILES
     main.cpp
@@ -131,7 +132,7 @@ set(SOURCE_FILES
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm::glm)
 
 target_include_directories(${PROJECT_NAME} PRIVATE 3rd/glad/include)
 target_include_directories(${PROJECT_NAME} PRIVATE 3rd/stb)
@@ -139,10 +140,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE 3rd/stb)
 target_compile_definitions(${PROJECT_NAME} PRIVATE SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 
 ######## assimp lib ############
-add_library(assimp_external SHARED IMPORTED)
-set_target_properties(assimp_external PROPERTIES IMPORTED_LOCATION ${CMAKE_PREFIX_PATH}/lib/libassimp.dylib)
-target_include_directories(assimp_external INTERFACE ${CMAKE_PREFIX_PATH}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE assimp_external)
+add_library(assimp STATIC IMPORTED)
+set(ASSIMP_LIB_NAMW "${CMAKE_STATIC_LIBRARY_PREFIX}assimp${CMAKE_STATIC_LIBRARY_SUFFIX}")
+set_target_properties(assimp PROPERTIES IMPORTED_LOCATION ${CMAKE_PREFIX_PATH}/lib/${ASSIMP_LIB_NAMW})
+target_include_directories(assimp INTERFACE ${CMAKE_PREFIX_PATH}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE assimp)
 
 ################################
 

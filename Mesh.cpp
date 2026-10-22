@@ -43,16 +43,16 @@ void lngl::Mesh::draw(const std::unique_ptr<ShaderProgram> &shader)
 void lngl::Mesh::setupMesh()
 {
     //VAO
-    glGenVertexArrays(0, &m_VAO);
+    glGenVertexArrays(1, &m_VAO);
     glBindVertexArray(m_VAO);
 
     //VBO
-    glGenBuffers(0, &m_VBO);
+    glGenBuffers(1, &m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &(m_vertices[0]), GL_STATIC_DRAW);
 
     //EBO
-    glGenBuffers(0, &m_EBO);
+    glGenBuffers(1, &m_EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &(m_indices[0]), GL_STATIC_DRAW);
 
