@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include <glad/glad.h>
 
-lngl::Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<int> &indices, const std::vector<Texture> &textures)
+lngl::Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> &textures)
     : m_vertices(vertices),
     m_indices(indices),
     m_textures(textures)
@@ -32,8 +32,9 @@ void lngl::Mesh::draw(const std::unique_ptr<ShaderProgram> &shader)
         std::string name = "material.";
         name += type + num;
         shader->setUniform(name, i);
+        shader->setUniform("material.shininess", 32.0f);
     }
-    glActiveTexture(GL_TEXTURE0);
+    // glActiveTexture(GL_TEXTURE0);
 
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);

@@ -9,7 +9,7 @@ namespace lngl {
 class Mesh
 {
 public:
-    explicit Mesh(const std::vector<Vertex> &vertices, const std::vector<int> &indices, const std::vector<Texture> &textures);
+    explicit Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> &textures);
 
     void draw(const std::unique_ptr<ShaderProgram> &shader);
 
@@ -18,7 +18,7 @@ private:
 
 private:
     std::vector<Vertex> m_vertices;
-    std::vector<int> m_indices;
+    std::vector<unsigned int> m_indices;
     std::vector<Texture> m_textures;
 
     unsigned int m_VAO{0};

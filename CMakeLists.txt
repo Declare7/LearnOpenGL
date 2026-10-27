@@ -69,6 +69,7 @@ set(SOURCE_FILES
     CameraSection.cpp
     ShaderProgram.h
     ShaderProgram.cpp
+    Model.h Model.cpp
 
     LightSection.h LightSection.cpp
     Camera.h Camera.cpp
@@ -76,6 +77,7 @@ set(SOURCE_FILES
     DataDefine.h
     learnopengl/shader_m.h
     learnopengl/camera.h
+    ModelLoadedSection.h ModelLoadedSection.cpp
 
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
@@ -128,6 +130,8 @@ set(SOURCE_FILES
     shader/LightSection/lightFlash.vert
     shader/LightSection/multiLight.frag
     shader/LightSection/multiLight.vert
+    shader/ModelLoadedSection/normal.frag
+    shader/ModelLoadedSection/normal.vert
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
@@ -140,8 +144,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE 3rd/stb)
 target_compile_definitions(${PROJECT_NAME} PRIVATE SOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 
 ######## assimp lib ############
-add_library(assimp STATIC IMPORTED)
-set(ASSIMP_LIB_NAMW "${CMAKE_STATIC_LIBRARY_PREFIX}assimp${CMAKE_STATIC_LIBRARY_SUFFIX}")
+add_library(assimp SHARED IMPORTED)
+set(ASSIMP_LIB_NAMW "${CMAKE_SHARED_LIBRARY_PREFIX}assimp${CMAKE_SHARED_LIBRARY_SUFFIX}")
 set_target_properties(assimp PROPERTIES IMPORTED_LOCATION ${CMAKE_PREFIX_PATH}/lib/${ASSIMP_LIB_NAMW})
 target_include_directories(assimp INTERFACE ${CMAKE_PREFIX_PATH}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE assimp)

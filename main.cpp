@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "LightSection.h"
+#include "ModelLoadedSection.h"
 #include "TriangleSection.h"
 #include "RectangleSection.h"
 #include "TransformSection.h"
@@ -135,6 +136,7 @@ void showMenu()
     cout<< "24. Light Point"<< endl;
     cout<< "25. Light Flash"<< endl;
     cout<< "26. Multi Light"<< endl;
+    cout<< "27. Mode Loaded"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -222,6 +224,9 @@ SectionBase* createSection(int choice)
         break;
     case 26:
         section = new LightSection("multiLight");
+        break;
+    case 27:
+        section = new ModelLoadedSection();
         break;
 
     default:
