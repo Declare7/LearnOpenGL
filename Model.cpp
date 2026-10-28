@@ -60,9 +60,12 @@ lngl::Mesh lngl::Model::processMesh(aiMesh *mesh, const aiScene *scene)
         vertex.position.y = mesh->mVertices[i].y;
         vertex.position.z = mesh->mVertices[i].z;
 
-        vertex.normal.x = mesh->mNormals[i].x;
-        vertex.normal.y = mesh->mNormals[i].y;
-        vertex.normal.z = mesh->mNormals[i].z;
+        if(mesh->mNormals)
+        {
+            vertex.normal.x = mesh->mNormals[i].x;
+            vertex.normal.y = mesh->mNormals[i].y;
+            vertex.normal.z = mesh->mNormals[i].z;
+        }
 
         if(mesh->mTextureCoords[0])
         {
@@ -70,7 +73,7 @@ lngl::Mesh lngl::Model::processMesh(aiMesh *mesh, const aiScene *scene)
             vertex.texCoords.y = mesh->mTextureCoords[0][i].y;
         }
 
-        vertices.push_back(std::move(vertex));
+        vertices.push_back(vertex);
     }
 
     for(unsigned int i= 0; i< mesh->mNumFaces; ++i)
@@ -85,6 +88,7 @@ lngl::Mesh lngl::Model::processMesh(aiMesh *mesh, const aiScene *scene)
     if(mesh->mMaterialIndex >= 0)
     {
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+
         std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
@@ -137,6 +141,7 @@ unsigned int lngl::Model::textureFromFile(const std::string &fileName)
     int width;
     int height;
     int channels;
+    stbi_set_flip_vertically_on_load(1);
     unsigned char *data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
     if(data)
     {
