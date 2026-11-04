@@ -78,6 +78,7 @@ set(SOURCE_FILES
     learnopengl/shader_m.h
     learnopengl/camera.h
     ModelLoadedSection.h ModelLoadedSection.cpp
+    InstanceSection.h InstanceSection.cpp
 
     shader/TriangleSection/normal.vert
     shader/TriangleSection/normal.frag
@@ -132,12 +133,13 @@ set(SOURCE_FILES
     shader/LightSection/multiLight.vert
     shader/ModelLoadedSection/normal.frag
     shader/ModelLoadedSection/normal.vert
+    shader/InstanceSection/normal.frag
+    shader/InstanceSection/normal.vert
+    shader/InstanceSection/instanceArray.frag
+    shader/InstanceSection/instanceArray.vert
 )
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES}
-    InstanceSection.h InstanceSection.cpp
-    shader/InstanceSection/normal.frag
-    shader/InstanceSection/normal.vert)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm::glm)
 

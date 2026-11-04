@@ -139,6 +139,7 @@ void showMenu()
     cout<< "26. Multi Light"<< endl;
     cout<< "27. Mode Loaded"<< endl;
     cout<< "28. Instance"<< endl;
+    cout<< "29. Instance Array"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -232,6 +233,9 @@ SectionBase* createSection(int choice)
         break;
     case 28:
         section = new InstanceSection();
+        break;
+    case 29:
+        section = new InstanceSection("instanceArray");
         break;
 
     default:

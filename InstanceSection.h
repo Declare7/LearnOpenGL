@@ -10,6 +10,7 @@ public:
 
     virtual void prepare();
     virtual void render();
+
 };
 
 #endif // INSTANCESECTION_H
