@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
 #include "3rd/stb/stb_image.h"
+#include "ShaderProgram.h"
 #include <format>
 
 glm::vec3 cubePositions[] = {

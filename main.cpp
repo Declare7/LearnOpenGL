@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "InstanceSection.h"
 #include "LightSection.h"
 #include "ModelLoadedSection.h"
 #include "TriangleSection.h"
@@ -137,6 +138,7 @@ void showMenu()
     cout<< "25. Light Flash"<< endl;
     cout<< "26. Multi Light"<< endl;
     cout<< "27. Mode Loaded"<< endl;
+    cout<< "28. Instance"<< endl;
 
     cout<< "----------------------------"<< endl;
     cout<< "Select To Show:"<< endl;
@@ -227,6 +229,9 @@ SectionBase* createSection(int choice)
         break;
     case 27:
         section = new ModelLoadedSection();
+        break;
+    case 28:
+        section = new InstanceSection();
         break;
 
     default:

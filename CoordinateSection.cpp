@@ -5,6 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "3rd/stb/stb_image.h"
+#include "ShaderProgram.h"
 
 CoordinateSection::CoordinateSection(const std::string &type, bool supportInput)
     : RectangleSection(type, supportInput)

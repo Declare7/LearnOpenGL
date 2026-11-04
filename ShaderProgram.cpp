@@ -38,6 +38,12 @@ void lngl::ShaderProgram::setUniform(const std::string &name, const glm::mat4 &v
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void lngl::ShaderProgram::setUniform(const std::string &name, const glm::vec2 &value) const
+{
+    auto location = glGetUniformLocation(m_shaderProgram, name.c_str());
+    glUniform2f(location, value.x, value.y);
+}
+
 void lngl::ShaderProgram::setUniform(const std::string &name, const glm::vec3 &value) const
 {
     auto location = glGetUniformLocation(m_shaderProgram, name.c_str());

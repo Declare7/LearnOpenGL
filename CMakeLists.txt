@@ -134,7 +134,10 @@ set(SOURCE_FILES
     shader/ModelLoadedSection/normal.vert
 )
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES}
+    InstanceSection.h InstanceSection.cpp
+    shader/InstanceSection/normal.frag
+    shader/InstanceSection/normal.vert)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glm::glm)
 

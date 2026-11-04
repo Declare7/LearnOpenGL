@@ -1,14 +1,13 @@
 #include "ModelLoadedSection.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include "Camera.h"
+#include <glad/glad.h>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
 ModelLoadedSection::ModelLoadedSection(const std::string &type)
     : SectionBase(type, true)
 {
-    m_camera = std::make_unique<lngl::Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
+
 }
 
 void ModelLoadedSection::prepare()
@@ -42,42 +41,4 @@ void ModelLoadedSection::render()
     m_shader->setUniform("view", m_camera->getViewMetrix());
 
     m_model->draw(m_shader);
-}
-
-void ModelLoadedSection::processInput(GLFWwindow *window)
-{
-    float deltaTime = glfwGetTime() - m_lastTime;
-    m_lastTime = glfwGetTime();
-
-    if(glfwGetKey(window, GLFW_KEY_W))
-    {
-        m_camera->onMoved(lngl::Camera::MOVE_FORWARD, deltaTime);
-    }
-    if(glfwGetKey(window, GLFW_KEY_S))
-    {
-        m_camera->onMoved(lngl::Camera::MOVE_BACKWARD, deltaTime);
-    }
-    if(glfwGetKey(window, GLFW_KEY_A))
-    {
-        m_camera->onMoved(lngl::Camera::MOVE_LEFT, deltaTime);
-    }
-    if(glfwGetKey(window, GLFW_KEY_D))
-    {
-        m_camera->onMoved(lngl::Camera::MOVE_RIGHT, deltaTime);
-    }
-}
-
-void ModelLoadedSection::processMouse(double msX, double msY)
-{
-    double xOffset = msX - m_lastMouseX;
-    double yOffset = msY - m_lastMouseY;
-    m_lastMouseX = msX;
-    m_lastMouseY = msY;
-
-    m_camera->onScrolled(xOffset, -yOffset);
-}
-
-void ModelLoadedSection::processWheel(double xOffset, double yOffset)
-{
-    m_camera->onZoomed(yOffset);
 }

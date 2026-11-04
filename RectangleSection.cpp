@@ -1,4 +1,5 @@
 #include "RectangleSection.h"
+#include "ShaderProgram.h"
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include "3rd/stb/stb_image.h"

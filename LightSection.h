@@ -2,6 +2,7 @@
 #define LIGHTSECTION_H
 
 #include "SectionBase.h"
+#include <glm/ext/vector_float3.hpp>
 
 namespace lngl {
 class Camera;

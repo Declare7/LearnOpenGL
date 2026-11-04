@@ -1,18 +1,21 @@
 #include "SectionBase.h"
 #include <typeinfo>
+#include "glad/glad.h"
+#include <GLFW/glfw3.h>
 
 #ifdef __GNUG__
 #include <cxxabi.h>
 #include <memory>
 #endif
 
-#include "glad/glad.h"
+#include "ShaderProgram.h"
+#include "Camera.h"
 
 SectionBase::SectionBase(const std::string &type, bool supportInput)
     : m_type(type),
     m_supportInput(supportInput)
 {
-
+    m_camera = std::make_unique<lngl::Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
 }
 
 SectionBase::~SectionBase()
@@ -23,6 +26,44 @@ SectionBase::~SectionBase()
 bool SectionBase::supportInput()
 {
     return m_supportInput;
+}
+
+void SectionBase::processInput(GLFWwindow *window)
+{
+    float deltaTime = glfwGetTime() - m_lastTime;
+    m_lastTime = glfwGetTime();
+
+    if(glfwGetKey(window, GLFW_KEY_W))
+    {
+        m_camera->onMoved(lngl::Camera::MOVE_FORWARD, deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_S))
+    {
+        m_camera->onMoved(lngl::Camera::MOVE_BACKWARD, deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_A))
+    {
+        m_camera->onMoved(lngl::Camera::MOVE_LEFT, deltaTime);
+    }
+    if(glfwGetKey(window, GLFW_KEY_D))
+    {
+        m_camera->onMoved(lngl::Camera::MOVE_RIGHT, deltaTime);
+    }
+}
+
+void SectionBase::processMouse(double msX, double msY)
+{
+    double xOffset = msX - m_lastMouseX;
+    double yOffset = msY - m_lastMouseY;
+    m_lastMouseX = msX;
+    m_lastMouseY = msY;
+
+    m_camera->onScrolled(xOffset, -yOffset);
+}
+
+void SectionBase::processWheel(double xOffset, double yOffset)
+{
+    m_camera->onZoomed(yOffset);
 }
 
 std::unique_ptr<lngl::ShaderProgram> SectionBase::loadShader(const std::string &type)
